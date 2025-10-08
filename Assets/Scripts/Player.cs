@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
     private float _speed = 4.5f;
+    [SerializeField]
+    private GameObject _zapPrefab;
+    [SerializeField]
+    private float _fireRate = 0.2f;
+    private float _canFire = -1f;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +23,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
+
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        {
+            FireWand();
+        }
     }
 
     void Movement()
@@ -50,4 +61,12 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(9.5f, transform.position.y, 0);
         }
     }
+
+    void FireWand()
+    {
+            _canFire = Time.time + _fireRate;
+            Instantiate(_zapPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+        
+    }
 }
+
