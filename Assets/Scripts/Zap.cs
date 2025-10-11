@@ -9,9 +9,9 @@ public class Zap : MonoBehaviour
    
     void Update()
     {
-        transform.Translate(Vector3.up * _speed * Time.deltaTime);
+        transform.Translate(Vector3.right * _speed * Time.deltaTime);
 
-        if (transform.position.y >= 6)
+        if (transform.position.x >= 9.5f)
         {
             Destroy(this.gameObject);
         }
