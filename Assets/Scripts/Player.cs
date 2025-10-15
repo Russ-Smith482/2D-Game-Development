@@ -8,26 +8,33 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 4.5f;
     [SerializeField]
+    private float _speedMultiplied = 2f;
+    [SerializeField]
     private GameObject _zapPrefab;
-    [SerializeField] 
+    [SerializeField]
     private GameObject _tripleZap;
     [SerializeField]
     private float _fireRate = 0.2f;
     private float _canFire = -1f;
-    [SerializeField] 
+    [SerializeField]
     private int _lives = 3;
     private SpawnManager _spawnManager;
 
     [SerializeField]
     private bool _tripleZapActive = false;
-    //bool for is TripleZap Active
+    [SerializeField]
+    private bool _shieldActive = false;
+    [SerializeField]
+    private GameObject _shieldVisualizer;
+
+    //variable ref to shield enablizer 
 
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(-4, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
-      
+
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL");
@@ -52,8 +59,8 @@ public class Player : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        transform.Translate(direction * _speed * Time.deltaTime);
 
+        transform.Translate(direction * _speed * Time.deltaTime);
 
         if (transform.position.x >= -3f)
         {
@@ -77,7 +84,7 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(transform.position.x, -4f, 0);
         }
 
-      
+
     }
 
     void FireWand()
@@ -85,7 +92,7 @@ public class Player : MonoBehaviour
         _canFire = Time.time + _fireRate;
 
 
-        if (_tripleZapActive == true) 
+        if (_tripleZapActive == true)
         {
             Instantiate(_tripleZap, transform.position, Quaternion.identity);
         }
@@ -97,13 +104,53 @@ public class Player : MonoBehaviour
     }
     public void Damage()
     {
-        _lives -= 1;
-
-        if (_lives < 1)
+        if (_shieldActive == true)
         {
-            _spawnManager.OnPlayerDeath();
-            Destroy(this.gameObject);
+            _shieldActive = false;
+            _shieldVisualizer.SetActive(false);
+            return;
         }
+
+        else if (_shieldActive == false)
+        {
+
+            _lives -= 1;
+
+            if (_lives < 1)
+            {
+                _spawnManager.OnPlayerDeath();
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+    public void ShieldActive()
+    {
+        _shieldActive = true;
+        _shieldVisualizer.SetActive(true);
+    } 
+    public void TripleZapActive()
+    {
+        _tripleZapActive = true;
+        StartCoroutine(TripleZapTimer());
+    }
+
+    IEnumerator TripleZapTimer()
+    {
+        yield return new WaitForSeconds(3);
+        _tripleZapActive = false;
+    }
+
+    public void SpeedBoostActive()
+    {  
+        _speed *= _speedMultiplied;
+        StartCoroutine(SpeedBoostTimer());
+    }
+    IEnumerator SpeedBoostTimer()
+    {
+        yield return new WaitForSeconds(5);
+        
+        _speed /= _speedMultiplied;
     }
 }
 

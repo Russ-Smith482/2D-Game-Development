@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Zap
+  - Potion
   layers:
   - Default
   - TransparentFX

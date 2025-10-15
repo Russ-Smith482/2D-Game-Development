@@ -17,10 +17,10 @@ public class Enemy : MonoBehaviour
     {
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
 
-        if (transform.position.y <= -5.5f)
+        if (transform.position.x <= -9.75f)
         {
-            float randomX = Random.Range(-8, 8f);
-            transform.position = new Vector3(randomX, 6f, 0);
+            float randomYSpawn = Random.Range(-4f, 4.2f);
+            transform.position = new Vector3(10f, randomYSpawn, 0);
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
