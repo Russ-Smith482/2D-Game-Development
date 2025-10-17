@@ -31,7 +31,8 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawning == false)
         {
             float randomYSpawn = Random.Range(-4f, 4.2f);
-            GameObject newEnemy = Instantiate(_enemyPrefab, transform.position = new Vector3(10f, randomYSpawn, 0), Quaternion.identity);
+            Vector3 spawnPosition = new Vector3(10f, randomYSpawn, 0);
+            GameObject newEnemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             yield return new WaitForSeconds(Random.Range(3, 6));
         }
@@ -41,9 +42,9 @@ public class SpawnManager : MonoBehaviour
     {
         while (_stopSpawning == false)
         {
-            float randomYSpawn = Random.Range(-4f, 4.2f);
+            float randomYSpawnPos = Random.Range(-4f, 4.2f);
             int randomPotion = Random.Range(0, 3);
-            GameObject newPotion = Instantiate(_potions[randomPotion], transform.position = new Vector3(10f, randomYSpawn, 0), Quaternion.identity);
+            GameObject newPotion = Instantiate(_potions[randomPotion], transform.position = new Vector3(10f, randomYSpawnPos, 0), Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(5, 9));
         }
             
