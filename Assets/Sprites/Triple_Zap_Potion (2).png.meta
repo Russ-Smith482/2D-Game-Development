@@ -1,25 +1,25 @@
 fileFormatVersion: 2
-guid: eec64b40866a3d64c8c0a03055a0175a
+guid: 399b4132adbebc34091ce9794df8a584
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2864513513732099180
-    second: Triple_Zap_Potion0
+      213: 2137988944535996301
+    second: Triple_Zap_Potion (2)_0
   - first:
-      213: 878236901723941619
-    second: Triple_Zap_Potion1
+      213: -4340548535957568998
+    second: Triple_Zap_Potion (2)_1
   - first:
-      213: -7402182116389850611
-    second: Triple_Zap_Potion2
+      213: -429565407538383836
+    second: Triple_Zap_Potion (2)_2
   - first:
-      213: 7310751826977031921
-    second: Triple_Zap_Potion3
+      213: -7576122236547957848
+    second: Triple_Zap_Potion (2)_3
   - first:
-      213: -7467961575761941815
-    second: Triple_Zap_Potion4
+      213: -5371473979549158158
+    second: Triple_Zap_Potion (2)_4
   - first:
-      213: 5522416380097464211
-    second: Triple_Zap_Potion5
+      213: 202173911901513328
+    second: Triple_Zap_Potion (2)_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -105,7 +105,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Triple_Zap_Potion0
+      name: Triple_Zap_Potion (2)_0
       rect:
         serializedVersion: 2
         x: 0
@@ -113,20 +113,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6cce482ddbc0c720800000000000000
-      internalID: 2864513513732099180
+      spriteID: d87c7c41e99abad10800000000000000
+      internalID: 2137988944535996301
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Triple_Zap_Potion1
+      name: Triple_Zap_Potion (2)_1
       rect:
         serializedVersion: 2
         x: 32
@@ -134,20 +134,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3fa25eb1fcf103c00800000000000000
-      internalID: 878236901723941619
+      spriteID: a1248ef8a1643c3c0800000000000000
+      internalID: -4340548535957568998
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Triple_Zap_Potion2
+      name: Triple_Zap_Potion (2)_2
       rect:
         serializedVersion: 2
         x: 64
@@ -155,20 +155,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0275d5659a264990800000000000000
-      internalID: -7402182116389850611
+      spriteID: 424f0eba980e90af0800000000000000
+      internalID: -429565407538383836
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Triple_Zap_Potion3
+      name: Triple_Zap_Potion (2)_3
       rect:
         serializedVersion: 2
         x: 96
@@ -176,20 +176,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f601087d02057560800000000000000
-      internalID: 7310751826977031921
+      spriteID: 8abfe9347f43cd690800000000000000
+      internalID: -7576122236547957848
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Triple_Zap_Potion4
+      name: Triple_Zap_Potion (2)_4
       rect:
         serializedVersion: 2
         x: 128
@@ -197,20 +197,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ca617883887c5890800000000000000
-      internalID: -7467961575761941815
+      spriteID: 2f4f7b8ffd0b475b0800000000000000
+      internalID: -5371473979549158158
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Triple_Zap_Potion5
+      name: Triple_Zap_Potion (2)_5
       rect:
         serializedVersion: 2
         x: 160
@@ -218,14 +218,14 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 397028d407093ac40800000000000000
-      internalID: 5522416380097464211
+      spriteID: 076adb90a144ec200800000000000000
+      internalID: 202173911901513328
       vertices: []
       indices: 
       edges: []

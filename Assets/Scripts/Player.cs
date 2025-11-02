@@ -13,10 +13,15 @@ public class Player : MonoBehaviour
     private GameObject _zapPrefab;
     [SerializeField]
     private GameObject _tripleZap;
+    
     [SerializeField]
     private float _fireRate = 0.2f;
     private float _canFire = -1f;
 
+    [SerializeField]
+    private GameObject _firstHit;
+    [SerializeField] 
+    private GameObject _SecondHit;
 
     [SerializeField]
     private int _lives = 3;
@@ -126,7 +131,18 @@ public class Player : MonoBehaviour
 
             _lives -= 1;
 
-            _uiManager.UpdateLives(_lives); 
+            if (_lives == 2)
+            {
+                _firstHit.SetActive(true);
+            }
+
+            else if (_lives == 1)
+            {
+                _SecondHit.SetActive(true);
+            }
+         
+               _uiManager.UpdateLives(_lives);
+         }
 
             if (_lives < 1)
             {
@@ -134,7 +150,7 @@ public class Player : MonoBehaviour
                 Destroy(this.gameObject);
 
             }
-        }
+        
     }
 
     public void ShieldActive()

@@ -1,25 +1,31 @@
 fileFormatVersion: 2
-guid: b7c8420fa0a817549847192febe64e5a
+guid: 362f99aaa7146474d8646b10333f1b26
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4918102330833865578
-    second: Speed_Potion0
+      213: -6874929629698272003
+    second: Crystal_Explode_0
   - first:
-      213: 6056816203075197079
-    second: Speed_Potion1
+      213: 5844341809693287030
+    second: Crystal_Explode_1
   - first:
-      213: 2469204670334085340
-    second: Speed_Potion2
+      213: -8490554112030421628
+    second: Crystal_Explode_2
   - first:
-      213: -2896918724305017334
-    second: Speed_Potion3
+      213: 6960386840735193837
+    second: Crystal_Explode_3
   - first:
-      213: 6646630254822590383
-    second: Speed_Potion4
+      213: 2610040759314538777
+    second: Crystal_Explode_4
   - first:
-      213: -1939007956614801397
-    second: Speed_Potion5
+      213: 6896353804210576309
+    second: Crystal_Explode_5
+  - first:
+      213: 7686532224501153049
+    second: Crystal_Explode_6
+  - first:
+      213: -6276704583265378565
+    second: Crystal_Explode_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -105,7 +111,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Speed_Potion0
+      name: Crystal_Explode_0
       rect:
         serializedVersion: 2
         x: 0
@@ -113,20 +119,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69470a1ccf36fbbb0800000000000000
-      internalID: -4918102330833865578
+      spriteID: df4d60e3de75790a0800000000000000
+      internalID: -6874929629698272003
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Speed_Potion1
+      name: Crystal_Explode_1
       rect:
         serializedVersion: 2
         x: 32
@@ -134,20 +140,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 798902e0f322e0450800000000000000
-      internalID: 6056816203075197079
+      spriteID: 6726bb849e54b1150800000000000000
+      internalID: 5844341809693287030
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Speed_Potion2
+      name: Crystal_Explode_2
       rect:
         serializedVersion: 2
         x: 64
@@ -155,20 +161,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd8aff4b090644220800000000000000
-      internalID: 2469204670334085340
+      spriteID: 48dc13e150e7b2a80800000000000000
+      internalID: -8490554112030421628
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Speed_Potion3
+      name: Crystal_Explode_3
       rect:
         serializedVersion: 2
         x: 96
@@ -176,20 +182,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a062f9ec4c31cc7d0800000000000000
-      internalID: -2896918724305017334
+      spriteID: dea135534f2489060800000000000000
+      internalID: 6960386840735193837
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Speed_Potion4
+      name: Crystal_Explode_4
       rect:
         serializedVersion: 2
         x: 128
@@ -197,20 +203,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa7801c50039d3c50800000000000000
-      internalID: 6646630254822590383
+      spriteID: 911eb34fd3ab83420800000000000000
+      internalID: 2610040759314538777
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Speed_Potion5
+      name: Crystal_Explode_5
       rect:
         serializedVersion: 2
         x: 160
@@ -218,14 +224,56 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b08915969824715e0800000000000000
-      internalID: -1939007956614801397
+      spriteID: 5bb92691f35c4bf50800000000000000
+      internalID: 6896353804210576309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crystal_Explode_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91dfbfb455c0caa60800000000000000
+      internalID: 7686532224501153049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crystal_Explode_7
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfe966adf6aa4e8a0800000000000000
+      internalID: -6276704583265378565
       vertices: []
       indices: 
       edges: []

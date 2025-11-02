@@ -1,25 +1,25 @@
 fileFormatVersion: 2
-guid: bfb48f37ec7b75f45a0f9eebb710f761
+guid: cad4eaf3083ff284d8e8259dc3856cb9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8881257817253534205
-    second: Shield_Potion_0
+      213: -6582297118340153411
+    second: Shield_Potion 1_0
   - first:
-      213: 9174247007121108086
-    second: Shield_Potion_1
+      213: -5883150499856501407
+    second: Shield_Potion 1_1
   - first:
-      213: 5087774905286075997
-    second: Shield_Potion_2
+      213: 5198239451109455833
+    second: Shield_Potion 1_2
   - first:
-      213: 6685946278814159309
-    second: Shield_Potion_3
+      213: 6117742187969131844
+    second: Shield_Potion 1_3
   - first:
-      213: 5711606613500132796
-    second: Shield_Potion_4
+      213: -131534797901603087
+    second: Shield_Potion 1_4
   - first:
-      213: -5576012136924559839
-    second: Shield_Potion_5
+      213: -5878904537694588969
+    second: Shield_Potion 1_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -105,7 +105,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Shield_Potion_0
+      name: Shield_Potion 1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -119,14 +119,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 30621f3f11f6fb480800000000000000
-      internalID: -8881257817253534205
+      spriteID: dbff14735abf6a4a0800000000000000
+      internalID: -6582297118340153411
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shield_Potion_1
+      name: Shield_Potion 1_1
       rect:
         serializedVersion: 2
         x: 32
@@ -140,14 +140,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67ce425bb09715f70800000000000000
-      internalID: 9174247007121108086
+      spriteID: 16534e76ac9da5ea0800000000000000
+      internalID: -5883150499856501407
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shield_Potion_2
+      name: Shield_Potion 1_2
       rect:
         serializedVersion: 2
         x: 64
@@ -161,14 +161,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5629b6f1586b9640800000000000000
-      internalID: 5087774905286075997
+      spriteID: 9d7fcc44d3bd32840800000000000000
+      internalID: 5198239451109455833
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shield_Potion_3
+      name: Shield_Potion 1_3
       rect:
         serializedVersion: 2
         x: 96
@@ -182,14 +182,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc1101887b049cc50800000000000000
-      internalID: 6685946278814159309
+      spriteID: 44532555b1696e450800000000000000
+      internalID: 6117742187969131844
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shield_Potion_4
+      name: Shield_Potion 1_4
       rect:
         serializedVersion: 2
         x: 128
@@ -203,14 +203,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cbd727e14f3b34f40800000000000000
-      internalID: 5711606613500132796
+      spriteID: 1fed8775cc1bc2ef0800000000000000
+      internalID: -131534797901603087
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shield_Potion_5
+      name: Shield_Potion 1_5
       rect:
         serializedVersion: 2
         x: 160
@@ -224,8 +224,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 126485321860e92b0800000000000000
-      internalID: -5576012136924559839
+      spriteID: 7df2842887fe96ea0800000000000000
+      internalID: -5878904537694588969
       vertices: []
       indices: 
       edges: []

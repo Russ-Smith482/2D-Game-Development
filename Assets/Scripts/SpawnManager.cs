@@ -17,17 +17,18 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       
+    }
+
+
+    public void StartSpawning()
+    {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPotionRoutine());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
     IEnumerator SpawnEnemyRoutine()
     {
+        yield return new WaitForSeconds(3f);
         while (_stopSpawning == false)
         {
             float randomYSpawn = Random.Range(-4f, 4.2f);
@@ -40,11 +41,12 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPotionRoutine()
     {
+        yield return new WaitForSeconds(6f);
         while (_stopSpawning == false)
         {
             float randomYSpawnPos = Random.Range(-4f, 4.2f);
             int randomPotion = Random.Range(0, 3);
-            GameObject newPotion = Instantiate(_potions[randomPotion], transform.position = new Vector3(10f, randomYSpawnPos, 0), Quaternion.identity);
+            GameObject newPotion = Instantiate(_potions[randomPotion], new Vector3(10f, randomYSpawnPos, 0), Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(5, 9));
         }
             
