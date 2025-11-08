@@ -10,7 +10,18 @@ public class Enemy : MonoBehaviour
     private Player _player;
 
     private Animator _anim;
-    //handle to animator comp
+
+    private AudioSource _audioSource;
+
+    private float _fireRate = 3f;
+    private float _canFire = -1f;
+
+    [SerializeField]
+    private GameObject _seed;
+
+    
+
+    // seed prefab variable
 
     // Start is called before the first frame update
     void Start()
@@ -27,11 +38,29 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Animator is NULL");
         }
 
-        //assign component to Animator
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+        {
+            Debug.LogError("Audio Source on the enemy is NULL");
+        }
+
     }
 
     // Update is called once per frame
     void Update()
+    {
+       CalculateMovement();
+
+        if (Time.time > _canFire)
+        {
+            _fireRate = Random.Range(2f, 7f);
+            _canFire = Time.time + _fireRate;
+            Instantiate(_seed, transform.position + new Vector3(-1f, 0, 0), Quaternion.identity);
+        }
+
+    }
+
+    private void CalculateMovement()
     {
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
 
@@ -53,7 +82,9 @@ public class Enemy : MonoBehaviour
             }
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
+            _audioSource.Play();
             Destroy(this.gameObject, 0.6f);
+            
         }
         
         else if (other.tag == "Zap")
@@ -66,10 +97,20 @@ public class Enemy : MonoBehaviour
             }
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
+            _audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 0.6f);
            
+           
         }
-      
+
     }
 
-}
+  
+
+    // shoot seed method
+    // instantiate seed 
+    //heads left
+
+
+    }

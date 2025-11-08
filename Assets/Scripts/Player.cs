@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -38,12 +37,20 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _shieldVisualizer;
 
+
+    // variable to store audio clip
+    [SerializeField]
+    private AudioClip _zapSoundEffect;
+  
+    private AudioSource _audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(-4, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _audioSource = GetComponent<AudioSource>();
 
         if (_spawnManager == null)
         {
@@ -53,6 +60,15 @@ public class Player : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.LogError("The UI Manager is NULL");
+        }
+
+        if (_audioSource == null)
+        {
+            Debug.LogError("Audio Source on the player is NULL");
+        }
+        else
+        {
+            _audioSource.clip = _zapSoundEffect;
         }
     }
 
@@ -77,9 +93,9 @@ public class Player : MonoBehaviour
 
         transform.Translate(direction * _speed * Time.deltaTime);
 
-        if (transform.position.x >= -3f)
+        if (transform.position.x >= -2f)
         {
-            transform.position = new Vector3(-3f, transform.position.y, 0);
+            transform.position = new Vector3(-2f, transform.position.y, 0);
 
         }
 
@@ -115,6 +131,9 @@ public class Player : MonoBehaviour
         {
             Instantiate(_zapPrefab, transform.position + new Vector3(0.8f, 0, 0), Quaternion.identity);
         }
+
+        _audioSource.Play();
+        //play zap audio clip
 
     }
     public void Damage()

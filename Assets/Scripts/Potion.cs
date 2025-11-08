@@ -11,12 +11,10 @@ public class Potion : MonoBehaviour
     //ID for potions : 0=TripleZap, 1=Speed, 2=Shield
     [SerializeField]
     private int _potionID;
+    [SerializeField]
+    private AudioClip _clip;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+   
 
     // Update is called once per frame
     void Update()
@@ -36,6 +34,9 @@ public class Potion : MonoBehaviour
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
+
+            AudioSource.PlayClipAtPoint(_clip, transform.position);
+
             if (player != null)
             {
                 switch(_potionID)

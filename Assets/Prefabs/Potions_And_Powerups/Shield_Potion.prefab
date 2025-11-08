@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _potionID: 2
+  _clip: {fileID: 8300000, guid: 9bf305f59ae1674419df25a0b5c162db, type: 3}
 --- !u!95 &231735967152557356
 Animator:
   serializedVersion: 3
