@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 322483217272553557}
   - component: {fileID: 5480115748981001856}
   - component: {fileID: 7763991963011535940}
-  - component: {fileID: 575709108853940701}
   - component: {fileID: 9169248431965596647}
+  - component: {fileID: -5349279631152291715}
   m_Layer: 0
   m_Name: Speed_Potion
   m_TagString: Potion
@@ -133,21 +133,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.26265678, y: 0.32}
   m_EdgeRadius: 0
---- !u!114 &575709108853940701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5018494842779250821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956ea39dc16ba3d43ae28d954a6649c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 3
-  _potionID: 1
-  _clip: {fileID: 8300000, guid: 9bf305f59ae1674419df25a0b5c162db, type: 3}
 --- !u!95 &9169248431965596647
 Animator:
   serializedVersion: 3
@@ -167,3 +152,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-5349279631152291715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5018494842779250821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6af2edad2ad9b4ea022148a03adaf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 3
+  _powerUpID: 1
+  _clip: {fileID: 8300000, guid: 9bf305f59ae1674419df25a0b5c162db, type: 3}

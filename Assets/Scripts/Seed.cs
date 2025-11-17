@@ -20,9 +20,7 @@ public class Seed : MonoBehaviour
         {
             Debug.LogError("Player is NULL");
         }
-       
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -36,7 +34,6 @@ public class Seed : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.tag == "Player")
         {
 
@@ -46,10 +43,10 @@ public class Seed : MonoBehaviour
 
             if (player != null)
             {
-                
+
 
                 player.Damage();
-                
+
                 Destroy(this.gameObject);
             }
         }

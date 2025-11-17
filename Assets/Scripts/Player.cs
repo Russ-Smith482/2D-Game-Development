@@ -5,21 +5,44 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 4.5f;
+    private float _speed = 3.5f;
     [SerializeField]
     private float _speedMultiplied = 2f;
+
+    private float _boostedSpeed = 5.5f;
+    private float _normalSpeed = 3.5f;
+
+
+    [SerializeField]
+    private float _boost = 100f;
+    [SerializeField]
+    private float _maxBoost = 100f;
+    [SerializeField]
+    private float _boostUsage = 25f;  // per second
+    [SerializeField]
+    private float _boostRecharge = 10f; // per second
+    [SerializeField]
+    private float _cooldownTime = 3f;
+
+    private bool _isBoosted = false;
+
+    private bool _isRecharging = false;
+
+
     [SerializeField]
     private GameObject _zapPrefab;
     [SerializeField]
     private GameObject _tripleZap;
-    
+
     [SerializeField]
-    private float _fireRate = 0.2f;
+    private float _fireRate = 0.50f;
     private float _canFire = -1f;
+    [SerializeField]
+    private int _ammoCount = 15;
 
     [SerializeField]
     private GameObject _firstHit;
-    [SerializeField] 
+    [SerializeField]
     private GameObject _SecondHit;
 
     [SerializeField]
@@ -32,16 +55,21 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private bool _tripleZapActive = false;
+
     [SerializeField]
     private bool _shieldActive = false;
     [SerializeField]
-    private GameObject _shieldVisualizer;
+    private GameObject _shieldFull;
+    [SerializeField]
+    private GameObject _shieldMid;
+    [SerializeField]
+    private GameObject _shieldLow;
+    [SerializeField]
+    private int _shieldLevel = 3;
 
 
-    // variable to store audio clip
     [SerializeField]
     private AudioClip _zapSoundEffect;
-  
     private AudioSource _audioSource;
 
     // Start is called before the first frame update
@@ -51,6 +79,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+
 
         if (_spawnManager == null)
         {
@@ -77,6 +106,8 @@ public class Player : MonoBehaviour
     {
         Movement();
 
+        SpeedBooster();
+
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             FireWand();
@@ -90,7 +121,6 @@ public class Player : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-
         transform.Translate(direction * _speed * Time.deltaTime);
 
         if (transform.position.x >= -2f)
@@ -98,26 +128,63 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(-2f, transform.position.y, 0);
 
         }
-
         else if (transform.position.x <= -8f)
         {
             transform.position = new Vector3(-8f, transform.position.y, 0);
         }
 
-
-        if (transform.position.y >= 4.2f)
+        if (transform.position.y >= 3.5f)
         {
-            transform.position = new Vector3(transform.position.x, 4.2f, 0);
+            transform.position = new Vector3(transform.position.x, 3.5f, 0);
         }
-
-        else if (transform.position.y <= -4f)
+        else if (transform.position.y <= -3f)
         {
-            transform.position = new Vector3(transform.position.x, -4f, 0);
+            transform.position = new Vector3(transform.position.x, -3f, 0);
         }
-
-
     }
+    void SpeedBooster()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && !_isBoosted && _boost > 0 && !_isRecharging)
 
+        {
+            StartCoroutine(BoostActive());
+        }
+    }
+    IEnumerator BoostActive()
+    {
+        _isBoosted = true;
+        _speed = _boostedSpeed;
+
+        while (Input.GetKey(KeyCode.LeftShift) && _boost > 0)
+        {
+            _boost -= _boostUsage * Time.deltaTime;
+            _boost = Mathf.Max(_boost, 0f);
+            _uiManager.BoostUpdater(_boost);
+            yield return null;
+        }
+
+        _isBoosted = false;
+        _speed = _normalSpeed;
+
+        if (!_isRecharging)
+            StartCoroutine(BoostRecharge());
+    }
+    IEnumerator BoostRecharge()
+    {
+        _isRecharging = true;
+
+        yield return new WaitForSeconds(_cooldownTime);
+
+        while (_boost < _maxBoost && !_isBoosted)
+        {
+            _boost += _boostRecharge * Time.deltaTime;
+            _boost = Mathf.Min(_boost, _maxBoost);
+            _uiManager.BoostUpdater(_boost);
+            yield return null;
+        }
+
+        _isRecharging = false;
+    }
     void FireWand()
     {
         _canFire = Time.time + _fireRate;
@@ -129,54 +196,111 @@ public class Player : MonoBehaviour
         }
         else if (_tripleZapActive == false)
         {
-            Instantiate(_zapPrefab, transform.position + new Vector3(0.8f, 0, 0), Quaternion.identity);
+            RegularZap();
         }
 
         _audioSource.Play();
-        //play zap audio clip
 
+    }
+    void RegularZap()
+    {
+        if (_ammoCount >= 1)
+        {
+            Instantiate(_zapPrefab, transform.position + new Vector3(0.8f, 0, 0), Quaternion.identity);
+            _ammoCount -= 1;
+            CalculateAmmo(_ammoCount);
+        }
+        else if (_ammoCount == 0)
+        {
+            _uiManager.RechargeWand();
+        }
+    }
+    public void CalculateAmmo(int currentAmmo)
+    {
+        _ammoCount = currentAmmo;
+        _uiManager.UpdateAmmo(_ammoCount);
     }
     public void Damage()
     {
         if (_shieldActive == true)
         {
-            _shieldActive = false;
-            _shieldVisualizer.SetActive(false);
-            return;
+            ShieldDamage();
         }
 
         else if (_shieldActive == false)
         {
-
-            _lives -= 1;
-
-            if (_lives == 2)
-            {
-                _firstHit.SetActive(true);
-            }
-
-            else if (_lives == 1)
-            {
-                _SecondHit.SetActive(true);
-            }
-         
-               _uiManager.UpdateLives(_lives);
-         }
-
-            if (_lives < 1)
-            {
-                _spawnManager.OnPlayerDeath();
-                Destroy(this.gameObject);
-
-            }
-        
+            PlayerDamage();
+        }
     }
+    public void PlayerDamage()
+    {
+        _lives -= 1;
 
+        if (_lives == 2)
+        {
+            _firstHit.SetActive(true);
+        }
+        else if (_lives == 1)
+        {
+            _SecondHit.SetActive(true);
+        }
+
+        _uiManager.UpdateLives(_lives);
+
+        if (_lives < 1)
+        {
+            _spawnManager.OnPlayerDeath();
+            Destroy(this.gameObject);
+        }
+    }
+    public void ShieldDamage()
+    {
+        _shieldLevel -= 1;
+
+        if (_shieldLevel == 2)
+        {
+            _shieldFull.SetActive(false);
+            _shieldMid.SetActive(true);
+        }
+        else if (_shieldLevel == 1)
+        {
+            _shieldMid.SetActive(false);
+            _shieldLow.SetActive(true);
+        }
+
+        if (_shieldLevel == 0)
+        {
+            _shieldLow.SetActive(false);
+            _shieldActive = false;
+        }
+    }
+    public void ExtraLife()
+    {
+        _lives += 1;
+
+        if (_lives == 4)
+        {
+            _lives = 3;
+        }
+        if (_lives == 3)
+        {
+            _firstHit.SetActive(false);
+        }
+        else if (_lives == 2)
+        {
+            _SecondHit.SetActive(false);
+        }
+
+        _uiManager.UpdateLives(_lives);
+    }
     public void ShieldActive()
     {
         _shieldActive = true;
-        _shieldVisualizer.SetActive(true);
-    } 
+        _shieldLevel = 3;
+        _shieldLow.SetActive(false);
+        _shieldMid.SetActive(false);
+        _shieldFull.SetActive(true);
+    }
     public void TripleZapActive()
     {
         _tripleZapActive = true;
@@ -190,23 +314,25 @@ public class Player : MonoBehaviour
     }
 
     public void SpeedBoostActive()
-    {  
+    {
         _speed *= _speedMultiplied;
         StartCoroutine(SpeedBoostTimer());
     }
     IEnumerator SpeedBoostTimer()
     {
         yield return new WaitForSeconds(5);
-        
+
         _speed /= _speedMultiplied;
     }
-
+    public void ZapRecharge()
+    {
+        _ammoCount = 15;
+        CalculateAmmo(_ammoCount);
+    }
     public void AddScore(int points)
     {
         _score += points;
         _uiManager.AddScore(_score);
     }
-    //method to add 100 to score
-    //communicate with ui to add score
 }
 

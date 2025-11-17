@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _scoreText;
     [SerializeField]
+    private Text _ammoText;
+    [SerializeField]
     private Image _livesImg;
     [SerializeField]
     private Sprite[] _livesSprites;
@@ -17,8 +19,27 @@ public class UIManager : MonoBehaviour
     private Text _gameOver;
     [SerializeField]
     private Text _restart;
+    [SerializeField]
+    private Text _recharge;
 
     private GameManager _gameManager;
+
+    [Header("Boost UI")]
+    [SerializeField] private Slider _boostBar;
+    [SerializeField] private Image _fillImage; // The "Fill" image inside the slider
+
+    [Header("Colors")]
+    [SerializeField] private Color _normalColor = Color.cyan;
+    [SerializeField] private Color _fullColor = Color.green;
+
+    [Header("Flash Settings")]
+    [SerializeField] private float _flashDuration = 0.1f;
+    [SerializeField] private int _flashCount = 4;
+
+    private bool _isFlashing = false;
+    private bool _flashRecharge = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,17 +47,13 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + 0;
         _gameOver.gameObject.SetActive(false);
         _restart.gameObject.SetActive(false);
+        _recharge.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
 
         if (_gameManager == null )
         {
             Debug.LogError("GameManager is NULL");
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
     public void AddScore(int playerScore)
@@ -46,12 +63,21 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLives(int currentLives)
     {
+        if (currentLives < 0 || currentLives > _livesSprites.Length) 
+            return;
+
         _livesImg.sprite = _livesSprites[currentLives];
 
         if (currentLives == 0)
         {
             GameOverSequence();
         }
+    }
+
+    public void UpdateAmmo(int currentAmmo)
+    
+    {
+        _ammoText.text = "Wand Energy " + currentAmmo.ToString();
     }
 
     void GameOverSequence()
@@ -73,4 +99,69 @@ public class UIManager : MonoBehaviour
         }
 
     }
+
+    public void BoostUpdater(float _boostLimit)
+    {
+        // Clamp to slider range (just in case)
+        _boostLimit = Mathf.Clamp(_boostLimit, _boostBar.minValue, _boostBar.maxValue);
+
+        // Update slider value
+        _boostBar.value = _boostLimit;
+
+        // Calculate percentage fill
+        float fillPercent = _boostBar.value / _boostBar.maxValue;
+
+        // When full, change color and optionally flash
+        if (fillPercent >= 0.995f)
+        {
+            _fillImage.color = _fullColor;
+
+            if (!_isFlashing)
+                StartCoroutine(FlashWhenFull());
+        }
+        else
+        {
+            _fillImage.color = _normalColor;
+        }
+    }
+
+    private IEnumerator FlashWhenFull()
+    {
+        _isFlashing = true;
+
+        for (int i = 0; i < _flashCount; i++)
+        {
+            _fillImage.color = Color.white;
+            yield return new WaitForSeconds(_flashDuration);
+            _fillImage.color = _fullColor;
+            yield return new WaitForSeconds(_flashDuration);
+        }
+
+        _isFlashing = false;
+    }
+
+    public void RechargeWand()
+    {
+        _recharge.gameObject.SetActive(true);
+
+        if (_flashRecharge == false)
+        {
+            StartCoroutine(Recharge());
+        }
+    }
+    private IEnumerator Recharge()
+    {
+        _flashRecharge = true;
+
+        for (int i = 0; i < _flashCount; i++)
+        {
+            _recharge.color = Color.white;
+            yield return new WaitForSeconds(_flashDuration);
+            _recharge.color = Color.red;
+            yield return new WaitForSeconds(_flashDuration);
+        }
+
+        _flashRecharge = false;
+    }
 }
+

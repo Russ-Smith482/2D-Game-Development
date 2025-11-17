@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1453933371157225808}
   - component: {fileID: 1453933371157225815}
   - component: {fileID: 1453933371157225814}
-  - component: {fileID: 1453933371157225813}
   - component: {fileID: 2410702764997036883}
+  - component: {fileID: -1201806724271316478}
   m_Layer: 0
   m_Name: Triple_Zap_Potion
   m_TagString: Potion
@@ -133,21 +133,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1453933371157225813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453933371157225812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956ea39dc16ba3d43ae28d954a6649c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 3
-  _potionID: 0
-  _clip: {fileID: 8300000, guid: 9bf305f59ae1674419df25a0b5c162db, type: 3}
 --- !u!95 &2410702764997036883
 Animator:
   serializedVersion: 3
@@ -167,3 +152,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-1201806724271316478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453933371157225812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6af2edad2ad9b4ea022148a03adaf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 3
+  _powerUpID: 0
+  _clip: {fileID: 8300000, guid: 9bf305f59ae1674419df25a0b5c162db, type: 3}

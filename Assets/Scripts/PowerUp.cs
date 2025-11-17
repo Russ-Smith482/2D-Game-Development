@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Potion : MonoBehaviour
+public class PowerUp : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3f;
-    //ID for potions : 0=TripleZap, 1=Speed, 2=Shield, 3=ZapRecharge
+    //ID for potions : 0=TripleZap, 1=Speed, 2=Shield, 3=ZapRecharge, 4=LifePowerUp
     [SerializeField]
     private int _powerUpID;
     [SerializeField]
@@ -46,6 +46,10 @@ public class Potion : MonoBehaviour
                         break;
                     case 3:
                         player.ZapRecharge();
+                        break;
+
+                    case 4:
+                        player.ExtraLife();
                         break;
                     default:
                         Debug.Log("Default Vault");

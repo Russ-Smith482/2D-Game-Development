@@ -6,7 +6,6 @@ public class Zap : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 6.0f;
-   
     void Update()
     {
         transform.Translate(Vector3.right * _speed * Time.deltaTime);
@@ -20,6 +19,5 @@ public class Zap : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
-
     }
 }
