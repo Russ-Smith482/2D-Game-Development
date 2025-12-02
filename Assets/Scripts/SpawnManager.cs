@@ -5,42 +5,113 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _enemyPrefab;
+    private GameObject[] _frequentEnemySpawn;
     [SerializeField]
-    private GameObject[] _potions;
+    private GameObject[] _standardEnemySpawn;
+    [SerializeField]
+    private GameObject[] _rareEnemySpawn;
+    [SerializeField]
+    private GameObject[] _frequentPowerUp;
+    [SerializeField]
+    private GameObject[] _standardPowerUp;
+    [SerializeField]
+    private GameObject[] _rarePowerUp;
+    
+  
     [SerializeField]
     private GameObject _enemyContainer;
 
     private bool _stopSpawning = false;
 
+    [SerializeField] private float _minSpawnDelay = 3f;
+    [SerializeField] private float _maxSpawnDelay = 6f;
+
+    public static SpawnManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+
+    }
     public void StartSpawning()
     {
-        StartCoroutine(SpawnEnemyRoutine());
-        StartCoroutine(SpawnPotionRoutine());
+        StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnPowerUps());
     }
-    IEnumerator SpawnEnemyRoutine()
+    
+    IEnumerator SpawnPowerUps()
     {
-        yield return new WaitForSeconds(3f);
-        while (_stopSpawning == false)
+        yield return new WaitForSeconds(7f);
+
+        while (!_stopSpawning)
         {
-            float randomYSpawn = Random.Range(-2.9f, 3.5f);
-            Vector3 spawnPosition = new Vector3(10f, randomYSpawn, 0);
-            GameObject newEnemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(Random.Range(3, 6));
+            float randomY = Random.Range(-2.9f, 3.5f);
+
+            int roll = Random.Range(0, 100);
+
+            GameObject prefabToSpawn = null;
+
+            if (roll < 50)
+            {
+                prefabToSpawn = _frequentPowerUp[Random.Range(0, _frequentPowerUp.Length)];
+            }
+            else if (roll < 90)
+            {
+                prefabToSpawn = _standardPowerUp[Random.Range(0, _standardPowerUp.Length)];
+            }
+            else 
+            {
+                prefabToSpawn = _rarePowerUp[Random.Range(0, _rarePowerUp.Length)];
+            }
+
+            Instantiate(prefabToSpawn, new Vector3(10f, randomY, 0), Quaternion.identity);
+
+            // Balanced interval
+            yield return new WaitForSeconds(Random.Range(7f, 18f));
         }
     }
-    IEnumerator SpawnPotionRoutine()
+
+    IEnumerator SpawnEnemies()
     {
-        yield return new WaitForSeconds(6f);
-        while (_stopSpawning == false)
+        yield return new WaitForSeconds(4f);
+
+        while (!_stopSpawning)
         {
-            float randomYSpawnPos = Random.Range(-2.9f, 3.5f);
-            int randomPotion = Random.Range(0, 5);
-            GameObject newPotion = Instantiate(_potions[randomPotion], new Vector3(10f, randomYSpawnPos, 0), Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(5, 9));
+            float randomY = Random.Range(-2.9f, 3.5f);
+
+
+            int roll = Random.Range(0, 100);
+
+            GameObject prefabToSpawn = null;
+
+            if (roll < 55)
+            {
+                prefabToSpawn = _frequentEnemySpawn[Random.Range(0, _frequentEnemySpawn.Length)];
+            }
+            else if (roll < 85)
+            {
+                prefabToSpawn = _standardEnemySpawn[Random.Range(0, _standardEnemySpawn.Length)];
+            }
+            else
+            {
+                prefabToSpawn = _rareEnemySpawn[Random.Range(0, _rareEnemySpawn.Length)];
+            }
+
+            Instantiate(prefabToSpawn, new Vector3(10f, randomY, 0), Quaternion.identity);
+
+            // Balanced interval
+            yield return new WaitForSeconds(Random.Range(3f, 5f));
         }
     }
+    public void OnWaveChanged(int wave)
+    {
+        // Example difficulty scaling:
+        _minSpawnDelay = Mathf.Max(1f, _minSpawnDelay - 0.2f);
+        _maxSpawnDelay = Mathf.Max(2f, _maxSpawnDelay - 0.2f);
+
+        //Debug.Log("Spawn rate increased for wave " + wave);
+    }
+
     public void OnPlayerDeath()
     {
         _stopSpawning = true;

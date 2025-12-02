@@ -1,16 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
-public class Seed : MonoBehaviour
+public class Bandage : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 6.0f;
-
+    public GameObject owner;
     private Player _player;
-
-    [SerializeField]
-    private AudioClip _clip;
 
     // Start is called before the first frame update
     void Start()
@@ -21,25 +17,18 @@ public class Seed : MonoBehaviour
             Debug.LogError("Player is NULL");
         }
     }
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        transform.Translate(Vector3.left * _speed * Time.deltaTime);
-
-        if (transform.position.x <= -9.5f)
+        if (owner == null)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
-
             Player player = other.transform.GetComponent<Player>();
-
-            AudioSource.PlayClipAtPoint(_clip, transform.position);
 
             if (player != null)
             {

@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     private GameObject _zapPrefab;
     [SerializeField]
     private GameObject _tripleZap;
+    [SerializeField] 
+    private GameObject _megaZap;
 
     [SerializeField]
     private float _fireRate = 0.50f;
@@ -55,6 +57,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private bool _tripleZapActive = false;
+    [SerializeField]
+    private bool _megaZapActive = false;
 
     [SerializeField]
     private bool _shieldActive = false;
@@ -72,6 +76,9 @@ public class Player : MonoBehaviour
     private AudioClip _zapSoundEffect;
     private AudioSource _audioSource;
 
+    [SerializeField]
+    private CameraShake _cameraShake;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -79,6 +86,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+        _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
 
 
         if (_spawnManager == null)
@@ -89,6 +97,11 @@ public class Player : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.LogError("The UI Manager is NULL");
+        }
+
+        if (_cameraShake == null)
+        {
+            Debug.LogError("CameraShake is NULL");
         }
 
         if (_audioSource == null)
@@ -185,22 +198,24 @@ public class Player : MonoBehaviour
 
         _isRecharging = false;
     }
-    void FireWand()
+    private void FireWand()
     {
         _canFire = Time.time + _fireRate;
-
 
         if (_tripleZapActive == true)
         {
             Instantiate(_tripleZap, transform.position, Quaternion.identity);
         }
-        else if (_tripleZapActive == false)
+        if (_megaZapActive == true && _tripleZapActive == false)
+        {
+            Instantiate(_megaZap, transform.position, Quaternion.identity);
+        }
+        else if (_tripleZapActive == false && _megaZapActive == false)
         {
             RegularZap();
         }
 
         _audioSource.Play();
-
     }
     void RegularZap()
     {
@@ -235,6 +250,7 @@ public class Player : MonoBehaviour
     public void PlayerDamage()
     {
         _lives -= 1;
+        StartCoroutine(_cameraShake.CameraShakeCoroutine(0.4f, 0.4f));
 
         if (_lives == 2)
         {
@@ -312,6 +328,16 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(3);
         _tripleZapActive = false;
     }
+    public void MegaZapActive()
+    {
+        _megaZapActive = true;
+        StartCoroutine(MegaZapTimer());
+    }
+    IEnumerator MegaZapTimer()
+    {
+        yield return new WaitForSeconds(5);
+        _megaZapActive = false;
+    }
 
     public void SpeedBoostActive()
     {
@@ -326,8 +352,10 @@ public class Player : MonoBehaviour
     }
     public void ZapRecharge()
     {
+        _uiManager.RechargeText();
         _ammoCount = 15;
         CalculateAmmo(_ammoCount);
+
     }
     public void AddScore(int points)
     {

@@ -2,73 +2,84 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Ghost : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3f;
 
     private Player _player;
-
-    private Animator _anim;
-
     private AudioSource _audioSource;
+    private enum MovePhase { DownTo3, LeftTo0, DownToNeg3, LeftForever }
+    private MovePhase phase = MovePhase.DownTo3;
 
-    private float _fireRate = 3f;
-    private float _canFire = -1f;
-
-    [SerializeField]
-    private GameObject _seed;
-
-    // Start is called before the first frame update
     void Start()
     {
+        transform.position = new Vector3(Random.Range(7.5f, 9.5f),6, 0);
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null)
         {
             Debug.LogError("Player is NULL");
         }
-
-        _anim = GetComponent<Animator>();
-        if (_anim == null)
-        {
-            Debug.LogError("Animator is NULL");
-        }
-
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
         {
             Debug.LogError("Audio Source on the enemy is NULL");
         }
     }
-
     void Update()
     {
-        CalculateMovement();
-
-        EnemyFire();
-
-    }
-
-    void EnemyFire()
-    {
-        if (Time.time > _canFire && _player != null)
+        switch (phase)
         {
-            _fireRate = Random.Range(2f, 7f);
-            _canFire = Time.time + _fireRate;
-            Instantiate(_seed, transform.position + new Vector3(-1f, 0, 0), Quaternion.identity);
+            case MovePhase.DownTo3:
+                MoveDownTo3();
+                break;
+
+            case MovePhase.LeftTo0:
+                MoveLeftTo0();
+                break;
+
+            case MovePhase.DownToNeg3:
+                MoveDownToNeg3();
+                break;
+
+            case MovePhase.LeftForever:
+                MoveLeftDestroy();
+                break;
         }
     }
-
-    private void CalculateMovement()
+    private void MoveDownTo3()
+    {
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        if (transform.position.y <= Random.Range(2f, 3.5f))
+        {
+            phase = MovePhase.LeftTo0;
+        }
+    }
+    private void MoveLeftTo0()
     {
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
-
-        if (transform.position.x <= -9.75f)
+        if (transform.position.x <= Random.Range(-1.5f, 0f))
         {
-            float randomYSpawn = Random.Range(-4f, 4.2f);
-            transform.position = new Vector3(10f, randomYSpawn, 0);
+            phase = MovePhase.DownToNeg3;
         }
     }
+    private void MoveDownToNeg3()
+    {
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        if (transform.position.y <= Random.Range(2.5f, -4.5f))
+        {
+            phase = MovePhase.LeftForever;
+        }
+    }
+    private void MoveLeftDestroy()
+    {
+        transform.Translate(Vector3.left * _speed * Time.deltaTime);
+        if (transform.position.x <= -9.75f)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
@@ -78,7 +89,6 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-            _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             WaveManager.Instance.EnemyDestroyed();
@@ -92,11 +102,10 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(100);
             }
-            _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 0.5f);
         }
     }
 }

@@ -6,7 +6,7 @@ public class PowerUp : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3f;
-    //ID for potions : 0=TripleZap, 1=Speed, 2=Shield, 3=ZapRecharge, 4=LifePowerUp
+    //ID for potions : 0=TripleZap, 1=Speed, 2=Shield, 3=ZapRecharge, 4=LifePowerUp, 5=MegaZap
     [SerializeField]
     private int _powerUpID;
     [SerializeField]
@@ -47,9 +47,14 @@ public class PowerUp : MonoBehaviour
                     case 3:
                         player.ZapRecharge();
                         break;
-
                     case 4:
                         player.ExtraLife();
+                        break;
+                    case 5:
+                        player.MegaZapActive();
+                        break;
+                    case 6:
+                        player.Damage();
                         break;
                     default:
                         Debug.Log("Default Vault");

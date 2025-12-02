@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    //handle to Text
+    public static UIManager Instance;
+
     [SerializeField]
     private Text _scoreText;
     [SerializeField]
@@ -20,7 +21,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _restart;
     [SerializeField]
-    private Text _recharge;
+    public Text _recharge;
+    [SerializeField]
+    private Text _waveText;
 
     private GameManager _gameManager;
 
@@ -39,8 +42,11 @@ public class UIManager : MonoBehaviour
     private bool _isFlashing = false;
     private bool _flashRecharge = false;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
 
-    // Start is called before the first frame update
     void Start()
     {
 
@@ -50,11 +56,19 @@ public class UIManager : MonoBehaviour
         _recharge.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
 
-        if (_gameManager == null )
+        if (_gameManager == null)
         {
             Debug.LogError("GameManager is NULL");
         }
 
+    }
+    public void UpdateWave(int waveNumber)
+    {
+        _waveText.text = $"Wave {waveNumber}";
+    }
+    public void ShowWaveComplete(int waveNumber)
+    {
+        _waveText.text = $"Wave {waveNumber} Complete!";
     }
     public void AddScore(int playerScore)
     {
@@ -63,7 +77,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLives(int currentLives)
     {
-        if (currentLives < 0 || currentLives > _livesSprites.Length) 
+        if (currentLives < 0 || currentLives > _livesSprites.Length)
             return;
 
         _livesImg.sprite = _livesSprites[currentLives];
@@ -75,7 +89,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void UpdateAmmo(int currentAmmo)
-    
+
     {
         _ammoText.text = "Wand Energy " + currentAmmo.ToString();
     }
@@ -162,6 +176,10 @@ public class UIManager : MonoBehaviour
         }
 
         _flashRecharge = false;
+    }
+    public void RechargeText()
+    {
+        _recharge.gameObject.SetActive(false);
     }
 }
 
