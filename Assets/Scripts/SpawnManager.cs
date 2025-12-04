@@ -4,116 +4,143 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject[] _frequentEnemySpawn;
-    [SerializeField]
-    private GameObject[] _standardEnemySpawn;
-    [SerializeField]
-    private GameObject[] _rareEnemySpawn;
-    [SerializeField]
-    private GameObject[] _frequentPowerUp;
-    [SerializeField]
-    private GameObject[] _standardPowerUp;
-    [SerializeField]
-    private GameObject[] _rarePowerUp;
-    
-  
-    [SerializeField]
-    private GameObject _enemyContainer;
-
-    private bool _stopSpawning = false;
-
-    [SerializeField] private float _minSpawnDelay = 3f;
-    [SerializeField] private float _maxSpawnDelay = 6f;
-
     public static SpawnManager Instance;
+
+    [Header("Enemy Spawns")]
+    [SerializeField] private GameObject[] frequentEnemies;
+    [SerializeField] private GameObject[] standardEnemies;
+    [SerializeField] private GameObject[] rareEnemies;
+
+    [Header("Power-Up Spawns")]
+    [SerializeField] private GameObject[] frequentPowerUps;
+    [SerializeField] private GameObject[] standardPowerUps;
+    [SerializeField] private GameObject[] rarePowerUps;
+
+    private bool spawningPaused = false;
+    private bool stopAllSpawning = false;
+
+    private float enemyMinDelay = 3f;
+    private float enemyMaxDelay = 5f;
+
+    private Coroutine enemyRoutine;
+    private Coroutine powerRoutine;
 
     private void Awake()
     {
         Instance = this;
-
     }
+
     public void StartSpawning()
     {
-        StartCoroutine(SpawnEnemies());
-        StartCoroutine(SpawnPowerUps());
+        enemyRoutine = StartCoroutine(SpawnEnemies());
+        powerRoutine = StartCoroutine(SpawnPowerUps());
     }
-    
-    IEnumerator SpawnPowerUps()
+
+    public void PauseSpawning()
     {
-        yield return new WaitForSeconds(7f);
+        spawningPaused = true;
+    }
 
-        while (!_stopSpawning)
-        {
-            float randomY = Random.Range(-2.9f, 3.5f);
+    public void ResumeSpawning(int wave)
+    {
+        spawningPaused = false;
 
-            int roll = Random.Range(0, 100);
+        // Scale spawn speed based on wave
+        enemyMinDelay = Mathf.Max(1f, 3f - (wave * 0.3f));
+        enemyMaxDelay = Mathf.Max(2f, 5f - (wave * 0.25f));
+    }
 
-            GameObject prefabToSpawn = null;
-
-            if (roll < 50)
-            {
-                prefabToSpawn = _frequentPowerUp[Random.Range(0, _frequentPowerUp.Length)];
-            }
-            else if (roll < 90)
-            {
-                prefabToSpawn = _standardPowerUp[Random.Range(0, _standardPowerUp.Length)];
-            }
-            else 
-            {
-                prefabToSpawn = _rarePowerUp[Random.Range(0, _rarePowerUp.Length)];
-            }
-
-            Instantiate(prefabToSpawn, new Vector3(10f, randomY, 0), Quaternion.identity);
-
-            // Balanced interval
-            yield return new WaitForSeconds(Random.Range(7f, 18f));
-        }
+    public void StopAllSpawning()
+    {
+        stopAllSpawning = true;
     }
 
     IEnumerator SpawnEnemies()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
 
-        while (!_stopSpawning)
+        while (!stopAllSpawning)
         {
-            float randomY = Random.Range(-2.9f, 3.5f);
+            if (spawningPaused)
+            {
+                yield return null;
+                continue;
+            }
 
-
+            float y = Random.Range(-3f, 3.5f);
             int roll = Random.Range(0, 100);
 
-            GameObject prefabToSpawn = null;
+            GameObject prefab = null;
 
-            if (roll < 55)
+            int wave = WaveManager.Instance.currentWave;
+
+            if (roll < 55)  // Common enemies
             {
-                prefabToSpawn = _frequentEnemySpawn[Random.Range(0, _frequentEnemySpawn.Length)];
+                prefab = frequentEnemies[Random.Range(0, frequentEnemies.Length)];
             }
-            else if (roll < 85)
+            else if (roll < 85 && wave >= 2)  // Standard enemies unlock at wave 2
             {
-                prefabToSpawn = _standardEnemySpawn[Random.Range(0, _standardEnemySpawn.Length)];
+                prefab = standardEnemies[Random.Range(0, standardEnemies.Length)];
+            }
+            else if (wave >= 5)  // Rare enemies start on wave 5+
+            {
+                prefab = rareEnemies[Random.Range(0, rareEnemies.Length)];
             }
             else
             {
-                prefabToSpawn = _rareEnemySpawn[Random.Range(0, _rareEnemySpawn.Length)];
+                // If rare/standard are locked, fallback to frequent
+                prefab = frequentEnemies[Random.Range(0, frequentEnemies.Length)];
             }
 
-            Instantiate(prefabToSpawn, new Vector3(10f, randomY, 0), Quaternion.identity);
+            Instantiate(prefab, new Vector3(10f, y, 0), Quaternion.identity);
 
-            // Balanced interval
-            yield return new WaitForSeconds(Random.Range(3f, 5f));
+            yield return new WaitForSeconds(Random.Range(enemyMinDelay, enemyMaxDelay));
         }
     }
-    public void OnWaveChanged(int wave)
+    IEnumerator SpawnPowerUps()
     {
-        // Example difficulty scaling:
-        _minSpawnDelay = Mathf.Max(1f, _minSpawnDelay - 0.2f);
-        _maxSpawnDelay = Mathf.Max(2f, _maxSpawnDelay - 0.2f);
+        yield return new WaitForSeconds(6f);
 
-        //Debug.Log("Spawn rate increased for wave " + wave);
+        while (!stopAllSpawning)
+        {
+            if (spawningPaused)
+            {
+                yield return null;
+                continue;
+            }
+
+            float y = Random.Range(-3f, 3.5f);
+            int roll = Random.Range(0, 100);
+
+            GameObject prefab = null;
+
+            int wave = WaveManager.Instance.currentWave;
+
+            if (roll < 50)
+            {
+                prefab = frequentPowerUps[Random.Range(0, frequentPowerUps.Length)];
+            }
+            else if (roll < 85)
+            {
+                prefab = standardPowerUps[Random.Range(0, standardPowerUps.Length)];
+            }
+            else if (wave >= 1)
+            {
+                prefab = rarePowerUps[Random.Range(0, rarePowerUps.Length)];
+            }
+            else
+            {
+                prefab = frequentPowerUps[Random.Range(0, frequentPowerUps.Length)];
+            }
+
+            Instantiate(prefab, new Vector3(10f, y, 0), Quaternion.identity);
+
+            yield return new WaitForSeconds(Random.Range(10f, 20f));
+        }
     }
 
     public void OnPlayerDeath()
     {
-        _stopSpawning = true;
+        stopAllSpawning = true;
     }
 }

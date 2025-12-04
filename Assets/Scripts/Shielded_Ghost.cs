@@ -61,7 +61,6 @@ public class Shielded_Ghost : MonoBehaviour
             SetNextTarget();
         }
     }
-
     private void AdvancePhase()
     {
         switch (phase)
@@ -77,7 +76,6 @@ public class Shielded_Ghost : MonoBehaviour
                 break;
         }
     }
-
     private void SetNextTarget()
     {
         Vector3 p = transform.position;
@@ -106,11 +104,8 @@ public class Shielded_Ghost : MonoBehaviour
                 break;
         }
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"Ghost collided with {other.tag}, hasBeenHit: {_hasBeenHit}");
-
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
@@ -125,9 +120,7 @@ public class Shielded_Ghost : MonoBehaviour
                 _audioSource.Play();
                 WaveManager.Instance.EnemyDestroyed();
                 Destroy(this.gameObject, 0.6f);
-
             }
-
             else if (_hasBeenHit == false)
             {
                 _hasBeenHit = true;
@@ -153,7 +146,6 @@ public class Shielded_Ghost : MonoBehaviour
                 Destroy(this.gameObject, 0.5f);
 
             }
-
             else if (_hasBeenHit == false)
             {
                 _hasBeenHit = true;

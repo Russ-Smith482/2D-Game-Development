@@ -18,9 +18,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _maxBoost = 100f;
     [SerializeField]
-    private float _boostUsage = 25f;  // per second
+    private float _boostUsage = 25f;  
     [SerializeField]
-    private float _boostRecharge = 10f; // per second
+    private float _boostRecharge = 10f; 
     [SerializeField]
     private float _cooldownTime = 3f;
 
@@ -71,6 +71,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _shieldLevel = 3;
 
+
+    [SerializeField] private float magnetRadius = 4f;
+    [SerializeField] private float magnetPullSpeed = 3f;
+
+    private Transform magnetTarget = null;
 
     [SerializeField]
     private AudioClip _zapSoundEffect;
@@ -125,6 +130,13 @@ public class Player : MonoBehaviour
         {
             FireWand();
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            TryStartMagnetPull();
+        }
+
+        MagnetPullUpdate();
     }
 
     void Movement()
@@ -228,6 +240,51 @@ public class Player : MonoBehaviour
         else if (_ammoCount == 0)
         {
             _uiManager.RechargeWand();
+        }
+    }
+    void TryStartMagnetPull()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, magnetRadius);
+
+        float closestDist = Mathf.Infinity;
+        Transform closestPowerup = null;
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.CompareTag("Powerup")) 
+            {
+                float dist = Vector2.Distance(transform.position, hit.transform.position);
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    closestPowerup = hit.transform;
+                }
+            }
+        }
+
+        if (closestPowerup != null)
+        {
+            magnetTarget = closestPowerup;
+        }
+    }
+    void MagnetPullUpdate()
+    {
+        if (magnetTarget == null)
+            return;
+
+        magnetTarget.position = Vector3.MoveTowards( magnetTarget.position, transform.position, magnetPullSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(magnetTarget.position, transform.position) < 0.4f)
+        {
+            PowerUp powerUp = magnetTarget.GetComponent<PowerUp>();
+
+            if (powerUp != null)
+            {
+                powerUp.Collect(this);
+            }
+
+            Destroy(magnetTarget.gameObject);
+            magnetTarget = null;
         }
     }
     public void CalculateAmmo(int currentAmmo)

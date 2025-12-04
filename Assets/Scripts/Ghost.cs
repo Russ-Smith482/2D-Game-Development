@@ -100,7 +100,7 @@ public class Ghost : MonoBehaviour
             Destroy(other.gameObject);
             if (_player != null)
             {
-                _player.AddScore(100);
+                _player.AddScore(150);
             }
             _speed = 0;
             _audioSource.Play();

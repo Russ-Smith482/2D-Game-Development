@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class SmartPumpkin : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3f;
@@ -46,16 +46,25 @@ public class Enemy : MonoBehaviour
         CalculateMovement();
 
         EnemyFire();
+
     }
+
     void EnemyFire()
     {
         if (Time.time > _canFire && _player != null)
         {
             _fireRate = Random.Range(2f, 7f);
             _canFire = Time.time + _fireRate;
-            Instantiate(_seed, transform.position + new Vector3(-1f, 0, 0), Quaternion.identity);
+
+            float directionX = _player.transform.position.x > transform.position.x ? 1f : -1f;
+
+            Vector3 offset = new Vector3(directionX * 1f, 0, 0);
+            GameObject seed = Instantiate(_seed, transform.position + offset, Quaternion.identity);
+            seed.GetComponent<Seed>().direction = directionX;
         }
     }
+
+
     private void CalculateMovement()
     {
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
@@ -75,7 +84,7 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-            _anim.SetTrigger("OnEnemyDeath");
+            //_anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             WaveManager.Instance.EnemyDestroyed();
@@ -89,7 +98,7 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(100);
             }
-            _anim.SetTrigger("OnEnemyDeath");
+            //_anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());

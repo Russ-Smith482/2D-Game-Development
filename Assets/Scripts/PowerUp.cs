@@ -5,8 +5,8 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 3f;
-    //ID for potions : 0=TripleZap, 1=Speed, 2=Shield, 3=ZapRecharge, 4=LifePowerUp, 5=MegaZap
+    private float _speed = 2.5f;
+    //ID for potions : 0=TripleZap, 1=Speed, 2=Shield, 3=ZapRecharge, 4=LifePowerUp, 5=MegaZap, 6=FirePotion
     [SerializeField]
     private int _powerUpID;
     [SerializeField]
@@ -25,43 +25,53 @@ public class PowerUp : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            Player player = other.transform.GetComponent<Player>();
+            Player player = other.GetComponent<Player>();
 
-            AudioSource.PlayClipAtPoint(_clip, transform.position);
-
-            if (player != null)
-            {
-                switch (_powerUpID)
-                {
-                    case 0:
-                        player.TripleZapActive();
-                        break;
-                    case 1:
-                        player.SpeedBoostActive();
-                        break;
-                    case 2:
-                        player.ShieldActive();
-                        break;
-                    case 3:
-                        player.ZapRecharge();
-                        break;
-                    case 4:
-                        player.ExtraLife();
-                        break;
-                    case 5:
-                        player.MegaZapActive();
-                        break;
-                    case 6:
-                        player.Damage();
-                        break;
-                    default:
-                        Debug.Log("Default Vault");
-                        break;
-                }
-            }
+            Collect(player);
             Destroy(this.gameObject);
+        }
+        else if (other.CompareTag("EnemyFire"))
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+    }
+
+    public void Collect(Player player)
+    {
+        AudioSource.PlayClipAtPoint(_clip, transform.position);
+
+        if (player != null)
+        {
+            switch (_powerUpID)
+            {
+                case 0:
+                    player.TripleZapActive();
+                    break;
+                case 1:
+                    player.SpeedBoostActive();
+                    break;
+                case 2:
+                    player.ShieldActive();
+                    break;
+                case 3:
+                    player.ZapRecharge();
+                    break;
+                case 4:
+                    player.ExtraLife();
+                    break;
+                case 5:
+                    player.MegaZapActive();
+                    break;
+                case 6:
+                    player.Damage();
+                    break;
+                default:
+                    Debug.Log("Default Vault");
+                    break;
+            }
         }
     }
 }

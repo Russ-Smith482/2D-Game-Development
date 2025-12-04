@@ -7,6 +7,8 @@ public class Seed : MonoBehaviour
     [SerializeField]
     private float _speed = 6.0f;
 
+    public float direction = -1f;
+
     private Player _player;
 
     [SerializeField]
@@ -24,9 +26,9 @@ public class Seed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.left * _speed * Time.deltaTime);
+        transform.Translate(Vector3.right * direction * _speed * Time.deltaTime);
 
-        if (transform.position.x <= -9.5f)
+        if (transform.position.x <= -9.5f || transform.position.x >= 9.5f)
         {
             Destroy(this.gameObject);
         }

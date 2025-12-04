@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -5349279631152291715}
   m_Layer: 0
   m_Name: Speed_Potion
-  m_TagString: Potion
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -4792771800695501154}
   m_Layer: 0
   m_Name: Seed
-  m_TagString: Seed
+  m_TagString: EnemyFire
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 6
+  direction: -1
   _clip: {fileID: 8300000, guid: 974b3acd7d0f13345bddebfae8459aff, type: 3}
 --- !u!61 &4478975433907377469
 BoxCollider2D:

@@ -8,6 +8,8 @@ TagManager:
   - Zap
   - Potion
   - Seed
+  - EnemyFire
+  - Powerup
   layers:
   - Default
   - TransparentFX

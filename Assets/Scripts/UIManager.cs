@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
     public Text _recharge;
     [SerializeField]
     private Text _waveText;
+    [SerializeField] 
+    private Text _eventText;
 
     private GameManager _gameManager;
 
@@ -62,13 +64,35 @@ public class UIManager : MonoBehaviour
         }
 
     }
+    // Called when a normal wave starts
     public void UpdateWave(int waveNumber)
     {
+        _eventText.text = "";  // Clear any event messages
         _waveText.text = $"Wave {waveNumber}";
     }
+    // Called when a normal wave ends
     public void ShowWaveComplete(int waveNumber)
     {
-        _waveText.text = $"Wave {waveNumber} Complete!";
+        _eventText.text = $"Wave {waveNumber} Complete!";
+    }
+
+    // Called right when wave 7 begins
+    public void ShowFinalWaveStart()
+    {
+        _waveText.text = "FINAL WAVE";
+        _eventText.text = "<color=yellow>BOSS INCOMING!</color>";
+    }
+
+    // Optional dramatic warning before final wave starts
+    public void ShowBossWarning()
+    {
+        _eventText.text = "<color=red>⚠ WARNING — BOSS APPROACHING ⚠</color>";
+    }
+    // Called after defeating final wave
+    public void ShowFinalWaveComplete()
+    {
+        _waveText.text = "WE PLAYED WITCH!";
+        _eventText.text = "<color=cyan>You defeated all waves!</color>";
     }
     public void AddScore(int playerScore)
     {

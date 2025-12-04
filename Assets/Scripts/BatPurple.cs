@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class BatPurple : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 3f;
-
     private Player _player;
-
-    private Animator _anim;
-
     private AudioSource _audioSource;
+    [SerializeField]
+    private float _speed = 2.5f;
 
-    private float _fireRate = 3f;
+    private float _fireRate = 2f;
     private float _canFire = -1f;
 
     [SerializeField]
-    private GameObject _seed;
+    private GameObject _sonarWave;
 
     // Start is called before the first frame update
     void Start()
@@ -27,13 +23,6 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Player is NULL");
         }
-
-        _anim = GetComponent<Animator>();
-        if (_anim == null)
-        {
-            Debug.LogError("Animator is NULL");
-        }
-
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
         {
@@ -41,20 +30,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    // Update is called once per frame
     void Update()
     {
         CalculateMovement();
 
         EnemyFire();
-    }
-    void EnemyFire()
-    {
-        if (Time.time > _canFire && _player != null)
-        {
-            _fireRate = Random.Range(2f, 7f);
-            _canFire = Time.time + _fireRate;
-            Instantiate(_seed, transform.position + new Vector3(-1f, 0, 0), Quaternion.identity);
-        }
     }
     private void CalculateMovement()
     {
@@ -66,6 +47,15 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(10f, randomYSpawn, 0);
         }
     }
+    void EnemyFire()
+    {
+        if (Time.time > _canFire && _player != null)
+        {
+            _fireRate = Random.Range(1f, 3f);
+            _canFire = Time.time + _fireRate;
+            Instantiate(_sonarWave, transform.position + new Vector3(-1.25f, 0, 0), Quaternion.identity);
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
@@ -75,7 +65,7 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-            _anim.SetTrigger("OnEnemyDeath");
+            //_anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             WaveManager.Instance.EnemyDestroyed();
@@ -89,7 +79,7 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(100);
             }
-            _anim.SetTrigger("OnEnemyDeath");
+            //_anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
