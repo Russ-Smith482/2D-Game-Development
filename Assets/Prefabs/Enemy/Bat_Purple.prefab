@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 7843621962470912592}
   - component: {fileID: 8919946857469223177}
   - component: {fileID: 6675597842547622193}
-  m_Layer: 0
+  - component: {fileID: -811868168570667662}
+  m_Layer: 9
   m_Name: Bat_Purple
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -253,3 +254,17 @@ MonoBehaviour:
   _speed: 2.5
   _sonarWave: {fileID: 1196814691377399618, guid: 22cce86313f8cb34fbefe68498884ad0,
     type: 3}
+--- !u!114 &-811868168570667662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818895845589319911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473309cb3e7887043beefb245f53a246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.5
+  force: 2

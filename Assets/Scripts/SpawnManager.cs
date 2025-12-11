@@ -11,6 +11,9 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject[] standardEnemies;
     [SerializeField] private GameObject[] rareEnemies;
 
+    [SerializeField]
+    private GameObject _boss;
+
     [Header("Power-Up Spawns")]
     [SerializeField] private GameObject[] frequentPowerUps;
     [SerializeField] private GameObject[] standardPowerUps;
@@ -24,6 +27,8 @@ public class SpawnManager : MonoBehaviour
 
     private Coroutine enemyRoutine;
     private Coroutine powerRoutine;
+
+    private bool bossSpawned = false;
 
     private void Awake()
     {
@@ -45,7 +50,6 @@ public class SpawnManager : MonoBehaviour
     {
         spawningPaused = false;
 
-        // Scale spawn speed based on wave
         enemyMinDelay = Mathf.Max(1f, 3f - (wave * 0.3f));
         enemyMaxDelay = Mathf.Max(2f, 5f - (wave * 0.25f));
     }
@@ -54,7 +58,6 @@ public class SpawnManager : MonoBehaviour
     {
         stopAllSpawning = true;
     }
-
     IEnumerator SpawnEnemies()
     {
         yield return new WaitForSeconds(2f);
@@ -67,36 +70,50 @@ public class SpawnManager : MonoBehaviour
                 continue;
             }
 
-            float y = Random.Range(-3f, 3.5f);
+            int wave = WaveManager.Instance.currentWave;
+
+            if (wave == 7)
+            {
+                if (!bossSpawned)
+                {
+                    bossSpawned = true;
+
+                    float y = 0f;
+                    Instantiate(_boss, new Vector3(10f, y, 0), Quaternion.identity);
+                }
+
+                yield return null;
+                continue;
+            }
+
+            float yPos = Random.Range(-3f, 3.5f);
             int roll = Random.Range(0, 100);
 
             GameObject prefab = null;
 
-            int wave = WaveManager.Instance.currentWave;
-
-            if (roll < 55)  // Common enemies
+            if (roll < 55)
             {
                 prefab = frequentEnemies[Random.Range(0, frequentEnemies.Length)];
             }
-            else if (roll < 85 && wave >= 2)  // Standard enemies unlock at wave 2
+            else if (roll < 85 && wave >= 2)
             {
                 prefab = standardEnemies[Random.Range(0, standardEnemies.Length)];
             }
-            else if (wave >= 5)  // Rare enemies start on wave 5+
+            else if (wave >= 5)
             {
                 prefab = rareEnemies[Random.Range(0, rareEnemies.Length)];
             }
             else
             {
-                // If rare/standard are locked, fallback to frequent
                 prefab = frequentEnemies[Random.Range(0, frequentEnemies.Length)];
             }
 
-            Instantiate(prefab, new Vector3(10f, y, 0), Quaternion.identity);
+            Instantiate(prefab, new Vector3(10f, yPos, 0), Quaternion.identity);
 
             yield return new WaitForSeconds(Random.Range(enemyMinDelay, enemyMaxDelay));
         }
     }
+
     IEnumerator SpawnPowerUps()
     {
         yield return new WaitForSeconds(6f);
@@ -124,7 +141,7 @@ public class SpawnManager : MonoBehaviour
             {
                 prefab = standardPowerUps[Random.Range(0, standardPowerUps.Length)];
             }
-            else if (wave >= 1)
+            else if (wave >= 2)
             {
                 prefab = rarePowerUps[Random.Range(0, rarePowerUps.Length)];
             }
@@ -138,7 +155,6 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(10f, 20f));
         }
     }
-
     public void OnPlayerDeath()
     {
         stopAllSpawning = true;

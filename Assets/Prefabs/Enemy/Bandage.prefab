@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6486887290346547524}
   - component: {fileID: -8204019237622557649}
   - component: {fileID: -7090538587112624620}
-  m_Layer: 0
+  - component: {fileID: 2958560770198890644}
+  m_Layer: 9
   m_Name: Bandage
   m_TagString: EnemyFire
   m_Icon: {fileID: 0}
@@ -144,3 +145,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2958560770198890644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2703715678502965597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473309cb3e7887043beefb245f53a246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.5
+  force: 2

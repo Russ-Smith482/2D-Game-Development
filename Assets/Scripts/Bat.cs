@@ -6,6 +6,7 @@ public class Bat : MonoBehaviour
 {
     private Player _player;
     private AudioSource _audioSource;
+    private Animator _anim;
 
     [SerializeField]
     private float _normalSpeed = 3.5f;
@@ -25,7 +26,12 @@ public class Bat : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
         {
-            Debug.LogError("Audio Source on the enemy is NULL");
+            Debug.LogError("Audio Source on BatR is NULL");
+        }
+        _anim = GetComponent<Animator>();
+        if (_anim == null)
+        {
+            Debug.LogError("Animator on BatR is NULL");
         }
     }
 
@@ -65,12 +71,12 @@ public class Bat : MonoBehaviour
             {
                 player.Damage();
             }
-            //_anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("Hit");
             _ramSpeed = 0;
             _normalSpeed = 0;
             _audioSource.Play();
             WaveManager.Instance.EnemyDestroyed();
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 1f);
         }
         else if (other.tag == "Zap")
         {
@@ -80,12 +86,12 @@ public class Bat : MonoBehaviour
             {
                 _player.AddScore(100);
             }
-            //_anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("Hit");
             _normalSpeed = 0;
             _ramSpeed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 1f);
         }
     }
 }

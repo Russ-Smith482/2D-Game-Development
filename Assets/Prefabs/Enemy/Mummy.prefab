@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5040930963427387499}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Fire_Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,8 @@ GameObject:
   - component: {fileID: 548476069104623675}
   - component: {fileID: 5070457825956701676}
   - component: {fileID: 4995944617720281139}
-  m_Layer: 0
+  - component: {fileID: 6173125545544204929}
+  m_Layer: 9
   m_Name: Mummy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,3 +288,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6173125545544204929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4303040751512370024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473309cb3e7887043beefb245f53a246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.5
+  force: 2

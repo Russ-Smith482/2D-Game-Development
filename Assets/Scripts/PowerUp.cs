@@ -6,7 +6,7 @@ public class PowerUp : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 2.5f;
-    //ID for potions : 0=TripleZap, 1=Speed, 2=Shield, 3=ZapRecharge, 4=LifePowerUp, 5=MegaZap, 6=FirePotion
+    //ID for potions : 0=TripleZap, 1=Speed, 2=Shield, 3=ZapRecharge, 4=LifePowerUp, 5=MegaZap, 6=FirePotion, 7=HomingZap
     [SerializeField]
     private int _powerUpID;
     [SerializeField]
@@ -38,7 +38,6 @@ public class PowerUp : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
     public void Collect(Player player)
     {
         AudioSource.PlayClipAtPoint(_clip, transform.position);
@@ -67,6 +66,9 @@ public class PowerUp : MonoBehaviour
                     break;
                 case 6:
                     player.Damage();
+                    break;
+                case 7:
+                    player.HomingZapActive();
                     break;
                 default:
                     Debug.Log("Default Vault");

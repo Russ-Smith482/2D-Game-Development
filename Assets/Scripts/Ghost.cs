@@ -9,6 +9,7 @@ public class Ghost : MonoBehaviour
 
     private Player _player;
     private AudioSource _audioSource;
+    private Animator _anim;
     private enum MovePhase { DownTo3, LeftTo0, DownToNeg3, LeftForever }
     private MovePhase phase = MovePhase.DownTo3;
 
@@ -24,6 +25,11 @@ public class Ghost : MonoBehaviour
         if (_audioSource == null)
         {
             Debug.LogError("Audio Source on the enemy is NULL");
+        }
+        _anim = GetComponent<Animator>();
+        if (_anim == null)
+        {
+            Debug.LogError("Anumator on GhostW is NULL");
         }
     }
     void Update()
@@ -79,7 +85,6 @@ public class Ghost : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
@@ -89,10 +94,11 @@ public class Ghost : MonoBehaviour
             {
                 player.Damage();
             }
+            _anim.SetTrigger("Hit");
             _speed = 0;
             _audioSource.Play();
             WaveManager.Instance.EnemyDestroyed();
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 0.9f);
         }
         else if (other.tag == "Zap")
         {
@@ -102,10 +108,11 @@ public class Ghost : MonoBehaviour
             {
                 _player.AddScore(150);
             }
+            _anim.SetTrigger("Hit");
             _speed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 0.5f);
+            Destroy(this.gameObject, 0.9f);
         }
     }
 }

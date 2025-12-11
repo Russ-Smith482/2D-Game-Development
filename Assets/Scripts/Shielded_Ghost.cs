@@ -11,15 +11,13 @@ public class Shielded_Ghost : MonoBehaviour
 
     private Player _player;
     private AudioSource _audioSource;
+    private Animator _anim;
 
     private MovePhase phase = MovePhase.DownTo3;
     private Vector3 targetPos;
 
-    private Animator _anim;
-
     [SerializeField]
     private bool _hasBeenHit = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +28,6 @@ public class Shielded_Ghost : MonoBehaviour
         {
             Debug.LogError("Animator is NULL");
         }
-
-
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null)
         {
@@ -43,7 +39,6 @@ public class Shielded_Ghost : MonoBehaviour
             Debug.LogError("Audio Source on the enemy is NULL");
         }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -116,10 +111,11 @@ public class Shielded_Ghost : MonoBehaviour
 
             if (_hasBeenHit == true)
             {
+                _anim.SetTrigger("Destroy");
                 _speed = 0;
                 _audioSource.Play();
                 WaveManager.Instance.EnemyDestroyed();
-                Destroy(this.gameObject, 0.6f);
+                Destroy(this.gameObject, 0.9f);
             }
             else if (_hasBeenHit == false)
             {
@@ -140,10 +136,11 @@ public class Shielded_Ghost : MonoBehaviour
                 {
                     _player.AddScore(100);
                 }
+                _anim.SetTrigger("Destroy");
                 _speed = 0;
                 _audioSource.Play();
                 Destroy(GetComponent<Collider2D>());
-                Destroy(this.gameObject, 0.5f);
+                Destroy(this.gameObject, 0.9f);
 
             }
             else if (_hasBeenHit == false)

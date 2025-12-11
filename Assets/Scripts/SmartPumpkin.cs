@@ -84,11 +84,11 @@ public class SmartPumpkin : MonoBehaviour
             {
                 player.Damage();
             }
-            //_anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("Hit");
             _speed = 0;
             _audioSource.Play();
             WaveManager.Instance.EnemyDestroyed();
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 0.9f);
         }
         else if (other.tag == "Zap")
         {
@@ -98,11 +98,11 @@ public class SmartPumpkin : MonoBehaviour
             {
                 _player.AddScore(100);
             }
-            //_anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("Hit");
             _speed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 0.9f);
         }
     }
 }

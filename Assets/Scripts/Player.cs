@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 3.5f;
+   
+    public float _speed = 3.5f;
     [SerializeField]
     private float _speedMultiplied = 2f;
 
@@ -37,6 +37,10 @@ public class Player : MonoBehaviour
     private GameObject _megaZap;
 
     [SerializeField]
+    private GameObject _homingZapPrefab;
+    private int _homingShotsRemaining = 0;
+
+    [SerializeField]
     private float _fireRate = 0.50f;
     private float _canFire = -1f;
     [SerializeField]
@@ -59,6 +63,8 @@ public class Player : MonoBehaviour
     private bool _tripleZapActive = false;
     [SerializeField]
     private bool _megaZapActive = false;
+    [SerializeField]
+    private bool _homingZapActive = false;
 
     [SerializeField]
     private bool _shieldActive = false;
@@ -210,19 +216,30 @@ public class Player : MonoBehaviour
 
         _isRecharging = false;
     }
-    private void FireWand()
+   private void FireWand()
     {
         _canFire = Time.time + _fireRate;
 
+        if (_homingZapActive && _homingShotsRemaining > 0)
+        {
+            Instantiate(_homingZapPrefab, transform.position, Quaternion.identity);
+            _homingShotsRemaining--;
+
+            if (_homingShotsRemaining <= 0)
+                _homingZapActive = false;
+
+            _audioSource.Play();
+            return;
+        }
         if (_tripleZapActive == true)
         {
             Instantiate(_tripleZap, transform.position, Quaternion.identity);
         }
-        if (_megaZapActive == true && _tripleZapActive == false)
+        else if (_megaZapActive == true)
         {
             Instantiate(_megaZap, transform.position, Quaternion.identity);
         }
-        else if (_tripleZapActive == false && _megaZapActive == false)
+        else
         {
             RegularZap();
         }
@@ -395,6 +412,11 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5);
         _megaZapActive = false;
     }
+    public void HomingZapActive()
+    {
+        _homingZapActive = true;
+        _homingShotsRemaining = 3;
+    }
 
     public void SpeedBoostActive()
     {
@@ -406,6 +428,18 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5);
 
         _speed /= _speedMultiplied;
+    }
+    public void SetSpeedTemporary(float newSpeed, float duration)
+    {
+        StartCoroutine(TemporarySpeed(newSpeed, duration));
+    }
+
+    private IEnumerator TemporarySpeed(float newSpeed, float duration)
+    {
+        float originalSpeed = _speed;
+        _speed = newSpeed;
+        yield return new WaitForSeconds(duration);
+        _speed = originalSpeed;
     }
     public void ZapRecharge()
     {

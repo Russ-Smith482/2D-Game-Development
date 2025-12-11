@@ -6,6 +6,7 @@ public class BatPurple : MonoBehaviour
 {
     private Player _player;
     private AudioSource _audioSource;
+    private Animator _anim;
     [SerializeField]
     private float _speed = 2.5f;
 
@@ -27,6 +28,11 @@ public class BatPurple : MonoBehaviour
         if (_audioSource == null)
         {
             Debug.LogError("Audio Source on the enemy is NULL");
+        }
+        _anim = GetComponent<Animator>();
+        if (_anim == null)
+        {
+            Debug.LogError("Animator on Ghost P is NULL");
         }
     }
 
@@ -65,11 +71,11 @@ public class BatPurple : MonoBehaviour
             {
                 player.Damage();
             }
-            //_anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("Hit");
             _speed = 0;
             _audioSource.Play();
             WaveManager.Instance.EnemyDestroyed();
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 0.9f);
         }
         else if (other.tag == "Zap")
         {
@@ -79,11 +85,11 @@ public class BatPurple : MonoBehaviour
             {
                 _player.AddScore(100);
             }
-            //_anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("Hit");
             _speed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 0.6f);
+            Destroy(this.gameObject, 0.9f);
         }
     }
 }

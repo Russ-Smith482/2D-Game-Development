@@ -91,7 +91,7 @@ public class UIManager : MonoBehaviour
     // Called after defeating final wave
     public void ShowFinalWaveComplete()
     {
-        _waveText.text = "WE PLAYED WITCH!";
+        _waveText.text = "WELL PLAYED WITCH!";
         _eventText.text = "<color=cyan>You defeated all waves!</color>";
     }
     public void AddScore(int playerScore)
