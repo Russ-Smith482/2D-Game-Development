@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
 
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
+    private AudioSource _audioSource;
 
     [SerializeField]
     private bool _tripleZapActive = false;
@@ -83,9 +84,8 @@ public class Player : MonoBehaviour
 
     private Transform magnetTarget = null;
 
-    [SerializeField]
-    private AudioClip _zapSoundEffect;
-    private AudioSource _audioSource;
+    [SerializeField] private PlayerAudio _playerAudio;
+
 
     [SerializeField]
     private CameraShake _cameraShake;
@@ -118,10 +118,6 @@ public class Player : MonoBehaviour
         if (_audioSource == null)
         {
             Debug.LogError("Audio Source on the player is NULL");
-        }
-        else
-        {
-            _audioSource.clip = _zapSoundEffect;
         }
     }
 
@@ -228,7 +224,7 @@ public class Player : MonoBehaviour
             if (_homingShotsRemaining <= 0)
                 _homingZapActive = false;
 
-            _audioSource.Play();
+            _playerAudio.PlayZap();
             return;
         }
         if (_tripleZapActive == true)
@@ -244,7 +240,7 @@ public class Player : MonoBehaviour
             RegularZap();
         }
 
-        _audioSource.Play();
+        _playerAudio.PlayZap();
     }
     void RegularZap()
     {
@@ -339,8 +335,10 @@ public class Player : MonoBehaviour
 
         if (_lives < 1)
         {
+            _playerAudio.PlayDeath();
             _spawnManager.OnPlayerDeath();
-            Destroy(this.gameObject);
+            Destroy(this.gameObject, 1.5f);
+
         }
     }
     public void ShieldDamage()

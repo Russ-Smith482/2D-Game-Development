@@ -106,7 +106,7 @@ public class Ghost : MonoBehaviour
             Destroy(other.gameObject);
             if (_player != null)
             {
-                _player.AddScore(150);
+                _player.AddScore(100);
             }
             _anim.SetTrigger("Hit");
             _speed = 0;

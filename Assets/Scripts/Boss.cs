@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    public UnityEngine.UI.Image healthBarFill; 
+    public UnityEngine.UI.Image healthBarFill;
 
     [SerializeField]
     private float _speed = 1.5f;
 
     [SerializeField]
     private int _lives = 20;
+    [SerializeField]
+    private int maxLives = 20;
 
     private int _hitCount = 0;
 
@@ -18,9 +20,12 @@ public class Boss : MonoBehaviour
     public Vector3 stopPosition = new Vector3(4f, 0f, 0f);
 
     [Header("Effects")]
-    public ScreenFlash screenFlash; 
+    public ScreenFlash screenFlash;
 
     private Player _player;
+
+    private Animator _anim;
+
     private bool _reachedStopPoint = false;
 
     // NEW
@@ -30,14 +35,14 @@ public class Boss : MonoBehaviour
     private Coroutine _glowCoroutine;
 
     [Header("Minions")]
-    public GameObject[] batPrefabs; 
+    public GameObject[] batPrefabs;
     public int batsPerTeleport = 3;
     public float batSpawnX = 10f;
     public float batMinY = -4f;
     public float batMaxY = 4.2f;
 
     [Header("Sweep Attack (50% HP)")]
-    public GameObject sweepPrefab;       // Assign your Sweep prefab
+    
     public float sweepChargeTime = 1f;
     private bool sweepUsed = false;
 
@@ -51,10 +56,12 @@ public class Boss : MonoBehaviour
     [SerializeField]
     private GameObject _shield;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        if (_lives == 0) _lives = maxLives; // ensure _lives starts at max
+        UpdateHealthBar();
+
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null)
         {
@@ -67,6 +74,12 @@ public class Boss : MonoBehaviour
             _normalColor = _spriteRenderer.color;
 
             StartInvulnerabilityGlow();
+        }
+
+        _anim = GetComponent<Animator>();
+        if (_anim == null)
+        {
+            Debug.LogError("Animator is NULL");
         }
     }
     // Update is called once per frame
@@ -105,22 +118,23 @@ public class Boss : MonoBehaviour
         if (_isInvulnerable)
             return;
 
-        _lives -= 1;
-
-        if (screenFlash)
-            screenFlash.Flash();
+        _lives = Mathf.Max(_lives - 1, 0);   // prevent negative lives
         UpdateHealthBar();
+
+        if (screenFlash != null)
+            screenFlash.Flash();
 
         _hitCount++;
 
+        // Teleport logic
         if (_reachedStopPoint && _hitCount >= 3)
         {
             Teleport();
             _hitCount = 0;
         }
 
-        // --- Trigger gaze at 75% and 25% health ---
-        float healthFraction = (float)_lives / 20f; // assuming max lives = 20
+        // Trigger gaze at 75% and 25% health
+        float healthFraction = (float)_lives / maxLives;
         if (canUseGaze && (healthFraction <= 0.75f || healthFraction <= 0.25f))
         {
             ShootGazeAtPlayer();
@@ -128,16 +142,16 @@ public class Boss : MonoBehaviour
         }
 
         if (_lives <= 0)
-        {
             Die();
-        }
     }
+
 
     private void UpdateHealthBar()
     {
         if (healthBarFill != null)
         {
-            healthBarFill.fillAmount = (float)_lives / 20f;
+            float fill = Mathf.Clamp01((float)_lives / maxLives);
+            healthBarFill.fillAmount = fill;
         }
     }
     private int CalculateBatsToSpawn()
@@ -195,12 +209,12 @@ public class Boss : MonoBehaviour
     // Pulsing glow coroutine
     private IEnumerator GlowRoutine()
     {
-        float pulseSpeed = 2f; 
-        Color glowColor = new Color(1f, 0.2f, 0.2f); 
+        float pulseSpeed = 2f;
+        Color glowColor = new Color(1f, 0.2f, 0.2f);
 
         while (true)
         {
-            float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f; 
+            float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f;
             _spriteRenderer.color = Color.Lerp(_normalColor, glowColor, t);
             yield return null;
         }
@@ -220,7 +234,6 @@ public class Boss : MonoBehaviour
             }
         }
     }
-   
     private IEnumerator DoSweepAttack()
     {
         _isInvulnerable = true;
@@ -234,14 +247,6 @@ public class Boss : MonoBehaviour
         // Teleport boss
         transform.position = new Vector3(7.5f, yPos, 0f);
         yield return new WaitForSeconds(0.5f); // small pause
-
-        // Spawn sweep behind boss
-        GameObject sweep = Instantiate(sweepPrefab, transform.position + Vector3.right * 1.5f, Quaternion.identity);
-        SweepAttack s = sweep.GetComponent<SweepAttack>();
-        s.bossTransform = transform;
-        s.targetHeight = 4f;
-        s.verticalExpandSpeed = 6f;
-        s.expandUp = topHalf; // determines vertical growth direction
 
         // 3-second charge
         float t = 0f;
@@ -259,9 +264,6 @@ public class Boss : MonoBehaviour
             transform.position += Vector3.left * rushSpeed * Time.deltaTime;
             yield return null;
         }
-
-        // Remove sweep
-        Destroy(sweep);
 
         // Teleport boss elsewhere
         transform.position = new Vector3(Random.Range(0f, 7.5f), Random.Range(-2.5f, 3.5f), 0f);
@@ -286,8 +288,11 @@ public class Boss : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Boss defeated!");
-        Destroy(gameObject);
+        _anim.SetTrigger("Death");
+
+        FindObjectOfType<GameManager>().BossDefeated();
+
+        Destroy(gameObject, 1.5f);
     }
     private void OnTriggerEnter2D(Collider2D other)
     {

@@ -22,10 +22,13 @@ public class UIManager : MonoBehaviour
     private Text _restart;
     [SerializeField]
     public Text _recharge;
+
+    [SerializeField] private Text _waveText;
+    [SerializeField] private Text _eventText;
+    [SerializeField] private Text _restartText;
+
     [SerializeField]
-    private Text _waveText;
-    [SerializeField] 
-    private Text _eventText;
+    private GameObject _bossHealthBar;
 
     private GameManager _gameManager;
 
@@ -63,6 +66,9 @@ public class UIManager : MonoBehaviour
             Debug.LogError("GameManager is NULL");
         }
 
+        if (_restartText != null)
+            _restartText.gameObject.SetActive(false);
+
     }
     // Called when a normal wave starts
     public void UpdateWave(int waveNumber)
@@ -81,18 +87,29 @@ public class UIManager : MonoBehaviour
     {
         _waveText.text = "FINAL WAVE";
         _eventText.text = "<color=yellow>BOSS INCOMING!</color>";
+        _bossHealthBar.SetActive(true);
     }
 
     // Optional dramatic warning before final wave starts
     public void ShowBossWarning()
     {
-        _eventText.text = "<color=red>⚠ WARNING — BOSS APPROACHING ⚠</color>";
+        _eventText.text = "<color=red>⚠ WARNING: BOSS APPROACHING ⚠</color>";
     }
     // Called after defeating final wave
     public void ShowFinalWaveComplete()
     {
         _waveText.text = "WELL PLAYED WITCH!";
         _eventText.text = "<color=cyan>You defeated all waves!</color>";
+
+        ShowRestartPrompt();
+    }
+    public void ShowRestartPrompt()
+    {
+        if (_restartText != null)
+        {
+            _restartText.text = "Press <color=yellow>R</color> to Play Again";
+            _restartText.gameObject.SetActive(true);
+        }
     }
     public void AddScore(int playerScore)
     {

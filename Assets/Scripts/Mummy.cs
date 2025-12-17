@@ -114,7 +114,7 @@ public class Mummy : MonoBehaviour
             Destroy(other.gameObject);
             if (_player != null)
             {
-                _player.AddScore(150);
+                _player.AddScore(200);
             }
             _speed = 0;
             _audioSource.Play();

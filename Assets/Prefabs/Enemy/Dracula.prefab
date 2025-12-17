@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 3752697276554033697}
   - component: {fileID: 3752697276554033696}
   - component: {fileID: 3630766441583134811}
+  - component: {fileID: 2070231529}
   m_Layer: 9
   m_Name: Dracula
   m_TagString: Enemy
@@ -276,8 +277,26 @@ MonoBehaviour:
   sweepPrefab: {fileID: 7782149402582734404, guid: fe6fb9507a945ed4f91b88788edb4dcc,
     type: 3}
   sweepChargeTime: 1
-  gazeDuration: 3
   gazeCooldown: 10
   _gazeBeam: {fileID: 791031058458552511, guid: 85606ac619db6ab4891d05d7655ccb97,
     type: 3}
   _shield: {fileID: 792498291}
+--- !u!95 &2070231529
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3752697276554033726}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 33a022fbdfeca064ba25963d26911b6c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

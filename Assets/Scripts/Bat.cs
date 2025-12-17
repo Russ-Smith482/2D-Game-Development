@@ -84,7 +84,7 @@ public class Bat : MonoBehaviour
             Destroy(other.gameObject);
             if (_player != null)
             {
-                _player.AddScore(100);
+                _player.AddScore(200);
             }
             _anim.SetTrigger("Hit");
             _normalSpeed = 0;

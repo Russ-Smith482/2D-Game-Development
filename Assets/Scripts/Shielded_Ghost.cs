@@ -134,7 +134,7 @@ public class Shielded_Ghost : MonoBehaviour
                 Destroy(other.gameObject);
                 if (_player != null)
                 {
-                    _player.AddScore(100);
+                    _player.AddScore(150);
                 }
                 _anim.SetTrigger("Destroy");
                 _speed = 0;

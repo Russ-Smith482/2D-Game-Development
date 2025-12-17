@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 3f;
+    private float _speed = 4f;
 
     private Player _player;
 
@@ -13,11 +13,13 @@ public class Enemy : MonoBehaviour
 
     private AudioSource _audioSource;
 
-    private float _fireRate = 3f;
+    private float _fireRate = 2f;
     private float _canFire = -1f;
 
     [SerializeField]
     private GameObject _seed;
+
+    private bool _isDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +45,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (_isDead) return;
+
         CalculateMovement();
 
         EnemyFire();
@@ -51,7 +55,7 @@ public class Enemy : MonoBehaviour
     {
         if (Time.time > _canFire && _player != null)
         {
-            _fireRate = Random.Range(2f, 7f);
+            _fireRate = Random.Range(1f, 5f);
             _canFire = Time.time + _fireRate;
             Instantiate(_seed, transform.position + new Vector3(-1f, 0, 0), Quaternion.identity);
         }
@@ -68,8 +72,11 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (_isDead) return;
+
         if (other.tag == "Player")
         {
+            _isDead = true;
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
@@ -83,6 +90,7 @@ public class Enemy : MonoBehaviour
         }
         else if (other.tag == "Zap")
         {
+            _isDead = true;
             WaveManager.Instance.EnemyDestroyed();
             Destroy(other.gameObject);
             if (_player != null)

@@ -16,6 +16,8 @@ public class BatPurple : MonoBehaviour
     [SerializeField]
     private GameObject _sonarWave;
 
+    private bool _isDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +41,7 @@ public class BatPurple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_isDead) return;
         CalculateMovement();
 
         EnemyFire();
@@ -64,8 +67,11 @@ public class BatPurple : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (_isDead) return;
+
         if (other.tag == "Player")
         {
+            _isDead = true;
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
@@ -79,11 +85,12 @@ public class BatPurple : MonoBehaviour
         }
         else if (other.tag == "Zap")
         {
+            _isDead = true;
             WaveManager.Instance.EnemyDestroyed();
             Destroy(other.gameObject);
             if (_player != null)
             {
-                _player.AddScore(100);
+                _player.AddScore(150);
             }
             _anim.SetTrigger("Hit");
             _speed = 0;

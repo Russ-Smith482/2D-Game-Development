@@ -50,8 +50,8 @@ public class SpawnManager : MonoBehaviour
     {
         spawningPaused = false;
 
-        enemyMinDelay = Mathf.Max(1f, 3f - (wave * 0.3f));
-        enemyMaxDelay = Mathf.Max(2f, 5f - (wave * 0.25f));
+        enemyMinDelay = Mathf.Max(1f, 3f - (wave * 0.25f));
+        enemyMaxDelay = Mathf.Max(2f, 5f - (wave * 0.2f));
     }
 
     public void StopAllSpawning()
@@ -91,7 +91,7 @@ public class SpawnManager : MonoBehaviour
 
             GameObject prefab = null;
 
-            if (roll < 55)
+            if (roll < 50)
             {
                 prefab = frequentEnemies[Random.Range(0, frequentEnemies.Length)];
             }
@@ -152,7 +152,7 @@ public class SpawnManager : MonoBehaviour
 
             Instantiate(prefab, new Vector3(10f, y, 0), Quaternion.identity);
 
-            yield return new WaitForSeconds(Random.Range(10f, 20f));
+            yield return new WaitForSeconds(Random.Range(7f, 18f));
         }
     }
     public void OnPlayerDeath()
