@@ -47,7 +47,7 @@ public class Boss : MonoBehaviour
     private bool sweepUsed = false;
 
     [Header("Gaze Attack")]
-    [SerializeField] private float gazeCooldown = 10f;  // Cooldown before gaze can happen again
+    [SerializeField] private float gazeCooldown = 10f; 
     private bool canUseGaze = true;
 
     [SerializeField]
@@ -55,6 +55,8 @@ public class Boss : MonoBehaviour
 
     [SerializeField]
     private GameObject _shield;
+
+    private bool _isDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -87,7 +89,7 @@ public class Boss : MonoBehaviour
     {
         CalculateMovement();
 
-        if (!_isInvulnerable && !sweepUsed && ((float)_lives / 20f) <= 0.50f)
+        if (!_isInvulnerable && !sweepUsed && ((float)_lives / maxLives) <= 0.50f)
         {
             sweepUsed = true;
             StartCoroutine(DoSweepAttack());
@@ -118,22 +120,22 @@ public class Boss : MonoBehaviour
         if (_isInvulnerable)
             return;
 
-        _lives = Mathf.Max(_lives - 1, 0);   // prevent negative lives
-        UpdateHealthBar();
+        _lives = Mathf.Max(_lives - 1, 0);  
 
         if (screenFlash != null)
             screenFlash.Flash();
 
         _hitCount++;
 
-        // Teleport logic
+        UpdateHealthBar();
+
+     
         if (_reachedStopPoint && _hitCount >= 3)
         {
             Teleport();
             _hitCount = 0;
         }
 
-        // Trigger gaze at 75% and 25% health
         float healthFraction = (float)_lives / maxLives;
         if (canUseGaze && (healthFraction <= 0.75f || healthFraction <= 0.25f))
         {
@@ -144,8 +146,6 @@ public class Boss : MonoBehaviour
         if (_lives <= 0)
             Die();
     }
-
-
     private void UpdateHealthBar()
     {
         if (healthBarFill != null)
@@ -156,13 +156,13 @@ public class Boss : MonoBehaviour
     }
     private int CalculateBatsToSpawn()
     {
-        float healthFraction = (float)_lives / 20f;  // Assuming max lives = 20
+        float healthFraction = (float)_lives / 20f;  
 
-        if (healthFraction > 2f / 3f)       // Above 2/3 health
+        if (healthFraction > 2f / 3f)       
             return 2;
-        else if (healthFraction > 1f / 3f)  // Between 1/3 and 2/3 health
+        else if (healthFraction > 1f / 3f)  
             return 3;
-        else                               // Last third health
+        else                              
             return 4;
     }
 
@@ -206,7 +206,6 @@ public class Boss : MonoBehaviour
         if (_spriteRenderer != null)
             _spriteRenderer.color = _normalColor;
     }
-    // Pulsing glow coroutine
     private IEnumerator GlowRoutine()
     {
         float pulseSpeed = 2f;
@@ -240,15 +239,12 @@ public class Boss : MonoBehaviour
         _shield.SetActive(true);
         StartInvulnerabilityGlow();
 
-        // Decide top or bottom half
         bool topHalf = Random.value > 0.5f;
         float yPos = topHalf ? 1.75f : -1.75f;
 
-        // Teleport boss
         transform.position = new Vector3(7.5f, yPos, 0f);
-        yield return new WaitForSeconds(0.5f); // small pause
+        yield return new WaitForSeconds(0.5f); 
 
-        // 3-second charge
         float t = 0f;
         float chargeTime = 3f;
         while (t < chargeTime)
@@ -257,7 +253,6 @@ public class Boss : MonoBehaviour
             yield return null;
         }
 
-        // Boss rush left
         float rushSpeed = 12f;
         while (transform.position.x > -11f)
         {
@@ -265,10 +260,8 @@ public class Boss : MonoBehaviour
             yield return null;
         }
 
-        // Teleport boss elsewhere
         transform.position = new Vector3(Random.Range(0f, 7.5f), Random.Range(-2.5f, 3.5f), 0f);
 
-        // End invulnerability
         _isInvulnerable = false;
         _shield.SetActive(false);
         StopInvulnerabilityGlow();
@@ -285,20 +278,32 @@ public class Boss : MonoBehaviour
         GazeProjectile gp = gaze.GetComponent<GazeProjectile>();
         gp.SetTarget(_player.transform, _player);
     }
-
     private void Die()
     {
-        _anim.SetTrigger("Death");
+        if (_isDead) return;
+        _isDead = true;
 
+        StopAllCoroutines();   
+        DestroyAllEnemies();
+
+        _anim.SetTrigger("Death");
         FindObjectOfType<GameManager>().BossDefeated();
 
         Destroy(gameObject, 1.5f);
+    }
+    private void DestroyAllEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies)
+        {
+            Destroy(enemy);
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Zap")
         {
-
             Damage();
             Destroy(other.gameObject);
         }

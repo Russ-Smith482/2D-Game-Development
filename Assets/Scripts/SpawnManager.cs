@@ -116,7 +116,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerUps()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(4f);
 
         while (!stopAllSpawning)
         {
@@ -133,11 +133,11 @@ public class SpawnManager : MonoBehaviour
 
             int wave = WaveManager.Instance.currentWave;
 
-            if (roll < 50)
+            if (roll < 45)
             {
                 prefab = frequentPowerUps[Random.Range(0, frequentPowerUps.Length)];
             }
-            else if (roll < 85)
+            else if (roll < 80)
             {
                 prefab = standardPowerUps[Random.Range(0, standardPowerUps.Length)];
             }
@@ -152,7 +152,7 @@ public class SpawnManager : MonoBehaviour
 
             Instantiate(prefab, new Vector3(10f, y, 0), Quaternion.identity);
 
-            yield return new WaitForSeconds(Random.Range(7f, 18f));
+            yield return new WaitForSeconds(Random.Range(5f, 12f));
         }
     }
     public void OnPlayerDeath()

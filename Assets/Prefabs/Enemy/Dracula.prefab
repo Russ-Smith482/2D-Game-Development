@@ -265,6 +265,7 @@ MonoBehaviour:
   healthBarFill: {fileID: 0}
   _speed: 1.5
   _lives: 20
+  maxLives: 20
   stopPosition: {x: 4, y: 0, z: 0}
   screenFlash: {fileID: 0}
   batPrefabs:
@@ -274,8 +275,6 @@ MonoBehaviour:
   batSpawnX: 10
   batMinY: -4
   batMaxY: 4.2
-  sweepPrefab: {fileID: 7782149402582734404, guid: fe6fb9507a945ed4f91b88788edb4dcc,
-    type: 3}
   sweepChargeTime: 1
   gazeCooldown: 10
   _gazeBeam: {fileID: 791031058458552511, guid: 85606ac619db6ab4891d05d7655ccb97,
