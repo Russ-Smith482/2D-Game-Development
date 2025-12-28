@@ -23,12 +23,9 @@ public class Boss : MonoBehaviour
     public ScreenFlash screenFlash;
 
     private Player _player;
-
     private Animator _anim;
 
     private bool _reachedStopPoint = false;
-
-    // NEW
     private bool _isInvulnerable = true;
     private SpriteRenderer _spriteRenderer;
     private Color _normalColor;
@@ -52,16 +49,14 @@ public class Boss : MonoBehaviour
 
     [SerializeField]
     private GameObject _gazeBeam;
-
     [SerializeField]
     private GameObject _shield;
-
     private bool _isDead = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (_lives == 0) _lives = maxLives; // ensure _lives starts at max
+        if (_lives == 0) _lives = maxLives; 
         UpdateHealthBar();
 
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -69,26 +64,21 @@ public class Boss : MonoBehaviour
         {
             Debug.LogError("Player is NULL");
         }
-
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_spriteRenderer != null)
         {
             _normalColor = _spriteRenderer.color;
-
             StartInvulnerabilityGlow();
         }
-
         _anim = GetComponent<Animator>();
         if (_anim == null)
         {
             Debug.LogError("Animator is NULL");
         }
     }
-    // Update is called once per frame
     void Update()
     {
         CalculateMovement();
-
         if (!_isInvulnerable && !sweepUsed && ((float)_lives / maxLives) <= 0.50f)
         {
             sweepUsed = true;
@@ -111,7 +101,6 @@ public class Boss : MonoBehaviour
             _isInvulnerable = false;
 
             StopInvulnerabilityGlow();
-
             SpawnBats();
         }
     }
@@ -124,18 +113,14 @@ public class Boss : MonoBehaviour
 
         if (screenFlash != null)
             screenFlash.Flash();
-
         _hitCount++;
-
         UpdateHealthBar();
 
-     
         if (_reachedStopPoint && _hitCount >= 3)
         {
             Teleport();
             _hitCount = 0;
         }
-
         float healthFraction = (float)_lives / maxLives;
         if (canUseGaze && (healthFraction <= 0.75f || healthFraction <= 0.25f))
         {
@@ -165,7 +150,6 @@ public class Boss : MonoBehaviour
         else                              
             return 4;
     }
-
     private void Teleport()
     {
         float newX = Random.Range(0f, 7.5f);
@@ -173,7 +157,6 @@ public class Boss : MonoBehaviour
 
         transform.position = new Vector3(newX, newY, transform.position.z);
         StartCoroutine(TemporaryInvulnerability(2f));
-
         SpawnBats();
     }
     private IEnumerator TemporaryInvulnerability(float duration)

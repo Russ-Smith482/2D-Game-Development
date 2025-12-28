@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Ghost : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 3f;
-
     private Player _player;
     private AudioSource _audioSource;
     private Animator _anim;
+
+    [SerializeField]
+    private float _speed = 3f;
     private enum MovePhase { DownTo3, LeftTo0, DownToNeg3, LeftForever }
     private MovePhase phase = MovePhase.DownTo3;
-
     void Start()
     {
         transform.position = new Vector3(Random.Range(7.5f, 9.5f),6, 0);

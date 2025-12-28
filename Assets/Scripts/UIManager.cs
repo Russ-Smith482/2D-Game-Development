@@ -22,24 +22,19 @@ public class UIManager : MonoBehaviour
     private Text _restart;
     [SerializeField]
     public Text _recharge;
-
     [SerializeField] private Text _waveText;
     [SerializeField] private Text _eventText;
     [SerializeField] private Text _restartText;
 
     [SerializeField]
     private GameObject _bossHealthBar;
-
     private GameManager _gameManager;
-
     [Header("Boost UI")]
     [SerializeField] private Slider _boostBar;
-    [SerializeField] private Image _fillImage; // The "Fill" image inside the slider
-
+    [SerializeField] private Image _fillImage;
     [Header("Colors")]
     [SerializeField] private Color _normalColor = Color.cyan;
     [SerializeField] private Color _fullColor = Color.green;
-
     [Header("Flash Settings")]
     [SerializeField] private float _flashDuration = 0.1f;
     [SerializeField] private int _flashCount = 4;
@@ -51,10 +46,8 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
     }
-
     void Start()
     {
-
         _scoreText.text = "Score: " + 0;
         _gameOver.gameObject.SetActive(false);
         _restart.gameObject.SetActive(false);
@@ -68,21 +61,16 @@ public class UIManager : MonoBehaviour
 
         if (_restartText != null)
             _restartText.gameObject.SetActive(false);
-
     }
-    // Called when a normal wave starts
     public void UpdateWave(int waveNumber)
     {
-        _eventText.text = "";  // Clear any event messages
+        _eventText.text = "";
         _waveText.text = $"Wave {waveNumber}";
     }
-    // Called when a normal wave ends
     public void ShowWaveComplete(int waveNumber)
     {
         _eventText.text = $"Wave {waveNumber} Complete!";
     }
-
-    // Called right when wave 7 begins
     public void ShowFinalWaveStart()
     {
         _waveText.text = "FINAL WAVE";
@@ -90,17 +78,14 @@ public class UIManager : MonoBehaviour
         _bossHealthBar.SetActive(true);
     }
 
-    // Optional dramatic warning before final wave starts
     public void ShowBossWarning()
     {
         _eventText.text = "<color=red>⚠ WARNING: BOSS APPROACHING ⚠</color>";
     }
-    // Called after defeating final wave
     public void ShowFinalWaveComplete()
     {
         _waveText.text = "WELL PLAYED WITCH!";
         _eventText.text = "<color=cyan>You defeated all waves!</color>";
-
         ShowRestartPrompt();
     }
     public void ShowRestartPrompt()
@@ -115,7 +100,6 @@ public class UIManager : MonoBehaviour
     {
         _scoreText.text = "Score: " + playerScore.ToString();
     }
-
     public void UpdateLives(int currentLives)
     {
         if (currentLives < 0 || currentLives > _livesSprites.Length)
@@ -128,13 +112,10 @@ public class UIManager : MonoBehaviour
             GameOverSequence();
         }
     }
-
     public void UpdateAmmo(int currentAmmo)
-
     {
         _ammoText.text = "Wand Energy " + currentAmmo.ToString();
     }
-
     void GameOverSequence()
     {
         _gameManager.GameOver();
@@ -142,7 +123,6 @@ public class UIManager : MonoBehaviour
         _restart.gameObject.SetActive(true);
         StartCoroutine(GameOverFlicker());
     }
-
     IEnumerator GameOverFlicker()
     {
         while (true)
@@ -152,21 +132,13 @@ public class UIManager : MonoBehaviour
             _gameOver.text = "";
             yield return new WaitForSeconds(0.5f);
         }
-
     }
-
     public void BoostUpdater(float _boostLimit)
     {
-        // Clamp to slider range (just in case)
         _boostLimit = Mathf.Clamp(_boostLimit, _boostBar.minValue, _boostBar.maxValue);
-
-        // Update slider value
         _boostBar.value = _boostLimit;
-
-        // Calculate percentage fill
         float fillPercent = _boostBar.value / _boostBar.maxValue;
 
-        // When full, change color and optionally flash
         if (fillPercent >= 0.995f)
         {
             _fillImage.color = _fullColor;
@@ -179,7 +151,6 @@ public class UIManager : MonoBehaviour
             _fillImage.color = _normalColor;
         }
     }
-
     private IEnumerator FlashWhenFull()
     {
         _isFlashing = true;
@@ -191,14 +162,11 @@ public class UIManager : MonoBehaviour
             _fillImage.color = _fullColor;
             yield return new WaitForSeconds(_flashDuration);
         }
-
         _isFlashing = false;
     }
-
     public void RechargeWand()
     {
         _recharge.gameObject.SetActive(true);
-
         if (_flashRecharge == false)
         {
             StartCoroutine(Recharge());
@@ -215,7 +183,6 @@ public class UIManager : MonoBehaviour
             _recharge.color = Color.red;
             yield return new WaitForSeconds(_flashDuration);
         }
-
         _flashRecharge = false;
     }
     public void RechargeText()

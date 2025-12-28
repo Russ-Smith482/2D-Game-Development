@@ -7,7 +7,6 @@ public class Bandage : MonoBehaviour
 {
     public GameObject owner;
     private Player _player;
-
     // Start is called before the first frame update
     void Start()
     {

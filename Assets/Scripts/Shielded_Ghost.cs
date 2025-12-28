@@ -6,16 +6,15 @@ public enum MovePhase { DownTo3, LeftTo0, DownToNeg3, LeftForever }
 
 public class Shielded_Ghost : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 3f;
-
     private Player _player;
     private AudioSource _audioSource;
     private Animator _anim;
 
+    [SerializeField]
+    private float _speed = 3f;
+
     private MovePhase phase = MovePhase.DownTo3;
     private Vector3 targetPos;
-
     [SerializeField]
     private bool _hasBeenHit = false;
     // Start is called before the first frame update
@@ -39,17 +38,13 @@ public class Shielded_Ghost : MonoBehaviour
             Debug.LogError("Audio Source on the enemy is NULL");
         }
     }
-    // Update is called once per frame
     void Update()
     {
         MoveToTarget();
     }
     private void MoveToTarget()
     {
-        // Move toward target
         transform.position = Vector3.MoveTowards(transform.position, targetPos, _speed * Time.deltaTime);
-
-        // When reached, select next target
         if (Vector3.Distance(transform.position, targetPos) < 0.05f)
         {
             AdvancePhase();
@@ -95,7 +90,6 @@ public class Shielded_Ghost : MonoBehaviour
                 {
                     Destroy(this.gameObject);
                 }
-                // off-screen destroy zone
                 break;
         }
     }
@@ -141,7 +135,6 @@ public class Shielded_Ghost : MonoBehaviour
                 _audioSource.Play();
                 Destroy(GetComponent<Collider2D>());
                 Destroy(this.gameObject, 0.9f);
-
             }
             else if (_hasBeenHit == false)
             {

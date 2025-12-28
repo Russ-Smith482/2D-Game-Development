@@ -13,7 +13,6 @@ public class Zap : MonoBehaviour
         if (transform.position.x >= 9.5f)
         {
             if (transform.parent != null)
-
             {
                 Destroy(transform.parent.gameObject);
             }

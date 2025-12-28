@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class SmartPumpkin : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 3f;
-
     private Player _player;
-
     private Animator _anim;
-
     private AudioSource _audioSource;
 
+    [SerializeField]
+    private float _speed = 3f;
     private float _fireRate = 3f;
     private float _canFire = -1f;
-
     [SerializeField]
     private GameObject _seed;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -27,28 +22,22 @@ public class SmartPumpkin : MonoBehaviour
         {
             Debug.LogError("Player is NULL");
         }
-
         _anim = GetComponent<Animator>();
         if (_anim == null)
         {
             Debug.LogError("Animator is NULL");
         }
-
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
         {
             Debug.LogError("Audio Source on the enemy is NULL");
         }
     }
-
     void Update()
     {
         CalculateMovement();
-
         EnemyFire();
-
     }
-
     void EnemyFire()
     {
         if (Time.time > _canFire && _player != null)
@@ -63,8 +52,6 @@ public class SmartPumpkin : MonoBehaviour
             seed.GetComponent<Seed>().direction = directionX;
         }
     }
-
-
     private void CalculateMovement()
     {
         transform.Translate(Vector3.left * _speed * Time.deltaTime);

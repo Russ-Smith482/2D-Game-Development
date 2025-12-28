@@ -10,7 +10,6 @@ public class CameraShake : MonoBehaviour
     {
         _cameraStartingPos = transform.position;
     }
-
     public IEnumerator CameraShakeCoroutine(float duration, float magnitude)
     {
         float _elapsedTime = 0.0f;

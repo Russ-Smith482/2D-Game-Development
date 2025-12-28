@@ -24,17 +24,14 @@ public class SpawnManager : MonoBehaviour
 
     private float enemyMinDelay = 3f;
     private float enemyMaxDelay = 5f;
-
     private Coroutine enemyRoutine;
     private Coroutine powerRoutine;
-
     private bool bossSpawned = false;
 
     private void Awake()
     {
         Instance = this;
     }
-
     public void StartSpawning()
     {
         enemyRoutine = StartCoroutine(SpawnEnemies());
@@ -45,15 +42,12 @@ public class SpawnManager : MonoBehaviour
     {
         spawningPaused = true;
     }
-
     public void ResumeSpawning(int wave)
     {
         spawningPaused = false;
-
         enemyMinDelay = Mathf.Max(1f, 3f - (wave * 0.25f));
         enemyMaxDelay = Mathf.Max(2f, 5f - (wave * 0.2f));
     }
-
     public void StopAllSpawning()
     {
         stopAllSpawning = true;
@@ -81,14 +75,11 @@ public class SpawnManager : MonoBehaviour
                     float y = 0f;
                     Instantiate(_boss, new Vector3(10f, y, 0), Quaternion.identity);
                 }
-
                 yield return null;
                 continue;
             }
-
             float yPos = Random.Range(-3f, 3.5f);
             int roll = Random.Range(0, 100);
-
             GameObject prefab = null;
 
             if (roll < 50)
@@ -113,7 +104,6 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(enemyMinDelay, enemyMaxDelay));
         }
     }
-
     IEnumerator SpawnPowerUps()
     {
         yield return new WaitForSeconds(4f);

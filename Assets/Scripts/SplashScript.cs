@@ -12,7 +12,6 @@ public class SplashScript : MonoBehaviour
     {
         Invoke(nameof(LoadNextScene), delay);
     }
-
     void LoadNextScene()
     {
         SceneManager.LoadScene(nextSceneName);

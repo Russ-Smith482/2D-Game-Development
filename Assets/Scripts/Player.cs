@@ -4,38 +4,35 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-   
+    private SpawnManager _spawnManager;
+    private UIManager _uiManager;
+    private AudioSource _audioSource;
+
     public float _speed = 3.5f;
     [SerializeField]
     private float _speedMultiplied = 2f;
-
     private float _boostedSpeed = 5.5f;
     private float _normalSpeed = 3.5f;
-
-
     [SerializeField]
     private float _boost = 100f;
     [SerializeField]
     private float _maxBoost = 100f;
     [SerializeField]
-    private float _boostUsage = 25f;  
+    private float _boostUsage = 25f;
     [SerializeField]
-    private float _boostRecharge = 10f; 
+    private float _boostRecharge = 10f;
     [SerializeField]
     private float _cooldownTime = 3f;
 
     private bool _isBoosted = false;
-
     private bool _isRecharging = false;
-
 
     [SerializeField]
     private GameObject _zapPrefab;
     [SerializeField]
     private GameObject _tripleZap;
-    [SerializeField] 
+    [SerializeField]
     private GameObject _megaZap;
-
     [SerializeField]
     private GameObject _homingZapPrefab;
     private int _homingShotsRemaining = 0;
@@ -56,17 +53,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _score;
 
-    private SpawnManager _spawnManager;
-    private UIManager _uiManager;
-    private AudioSource _audioSource;
-
     [SerializeField]
     private bool _tripleZapActive = false;
     [SerializeField]
     private bool _megaZapActive = false;
     [SerializeField]
     private bool _homingZapActive = false;
-
     [SerializeField]
     private bool _shieldActive = false;
     [SerializeField]
@@ -78,15 +70,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _shieldLevel = 3;
 
-
     [SerializeField] private float magnetRadius = 4f;
     [SerializeField] private float magnetPullSpeed = 3f;
-
     private Transform magnetTarget = null;
 
     [SerializeField] private PlayerAudio _playerAudio;
-
-
     [SerializeField]
     private CameraShake _cameraShake;
 
@@ -98,7 +86,6 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
         _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
-
 
         if (_spawnManager == null)
         {
@@ -121,26 +108,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         Movement();
-
         SpeedBooster();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             FireWand();
         }
-
         if (Input.GetKeyDown(KeyCode.C))
         {
             TryStartMagnetPull();
         }
-
         MagnetPullUpdate();
     }
-
     void Movement()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -209,10 +191,9 @@ public class Player : MonoBehaviour
             _uiManager.BoostUpdater(_boost);
             yield return null;
         }
-
         _isRecharging = false;
     }
-   private void FireWand()
+    private void FireWand()
     {
         _canFire = Time.time + _fireRate;
 
@@ -223,7 +204,6 @@ public class Player : MonoBehaviour
 
             if (_homingShotsRemaining <= 0)
                 _homingZapActive = false;
-
             _playerAudio.PlayZap();
             return;
         }
@@ -239,7 +219,6 @@ public class Player : MonoBehaviour
         {
             RegularZap();
         }
-
         _playerAudio.PlayZap();
     }
     void RegularZap()
@@ -264,7 +243,7 @@ public class Player : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            if (hit.CompareTag("Powerup")) 
+            if (hit.CompareTag("Powerup"))
             {
                 float dist = Vector2.Distance(transform.position, hit.transform.position);
                 if (dist < closestDist)
@@ -274,7 +253,6 @@ public class Player : MonoBehaviour
                 }
             }
         }
-
         if (closestPowerup != null)
         {
             magnetTarget = closestPowerup;
@@ -285,7 +263,7 @@ public class Player : MonoBehaviour
         if (magnetTarget == null)
             return;
 
-        magnetTarget.position = Vector3.MoveTowards( magnetTarget.position, transform.position, magnetPullSpeed * Time.deltaTime);
+        magnetTarget.position = Vector3.MoveTowards(magnetTarget.position, transform.position, magnetPullSpeed * Time.deltaTime);
 
         if (Vector3.Distance(magnetTarget.position, transform.position) < 0.4f)
         {
@@ -311,7 +289,6 @@ public class Player : MonoBehaviour
         {
             ShieldDamage();
         }
-
         else if (_shieldActive == false)
         {
             PlayerDamage();
@@ -330,15 +307,12 @@ public class Player : MonoBehaviour
         {
             _SecondHit.SetActive(true);
         }
-
         _uiManager.UpdateLives(_lives);
-
         if (_lives < 1)
         {
             _playerAudio.PlayDeath();
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject, 1.5f);
-
         }
     }
     public void ShieldDamage()
@@ -355,7 +329,6 @@ public class Player : MonoBehaviour
             _shieldMid.SetActive(false);
             _shieldLow.SetActive(true);
         }
-
         if (_shieldLevel == 0)
         {
             _shieldLow.SetActive(false);
@@ -378,7 +351,6 @@ public class Player : MonoBehaviour
         {
             _SecondHit.SetActive(false);
         }
-
         _uiManager.UpdateLives(_lives);
     }
     public void ShieldActive()
@@ -394,7 +366,6 @@ public class Player : MonoBehaviour
         _tripleZapActive = true;
         StartCoroutine(TripleZapTimer());
     }
-
     IEnumerator TripleZapTimer()
     {
         yield return new WaitForSeconds(3);
@@ -415,7 +386,6 @@ public class Player : MonoBehaviour
         _homingZapActive = true;
         _homingShotsRemaining = 3;
     }
-
     public void SpeedBoostActive()
     {
         _speed *= _speedMultiplied;
@@ -424,14 +394,12 @@ public class Player : MonoBehaviour
     IEnumerator SpeedBoostTimer()
     {
         yield return new WaitForSeconds(5);
-
         _speed /= _speedMultiplied;
     }
     public void SetSpeedTemporary(float newSpeed, float duration)
     {
         StartCoroutine(TemporarySpeed(newSpeed, duration));
     }
-
     private IEnumerator TemporarySpeed(float newSpeed, float duration)
     {
         float originalSpeed = _speed;
@@ -444,7 +412,6 @@ public class Player : MonoBehaviour
         _uiManager.RechargeText();
         _ammoCount = 15;
         CalculateAmmo(_ammoCount);
-
     }
     public void AddScore(int points)
     {

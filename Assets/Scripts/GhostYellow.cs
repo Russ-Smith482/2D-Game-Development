@@ -4,28 +4,25 @@ using UnityEngine;
 
 public class GhostYellow : MonoBehaviour
 {
+    private Player _player;
+    private AudioSource _audioSource;
+    private Animator _anim;
+
     [SerializeField]
     private float _speed = 3f;
-
     [SerializeField]
     private float dodgeRange = 2.5f;
     [SerializeField]
     private float dodgeAmount = 1.5f;
     [SerializeField]
     private float dodgeSpeed = 4f;
-
     private bool _isDodging = false;
     private Vector3 _dodgeTarget;
-
-    private Player _player;
-    private AudioSource _audioSource;
-    private Animator _anim;
     private enum MovePhase { UpToNeg3, LeftTo0, UpTo3, LeftForever }
     private MovePhase phase = MovePhase.UpToNeg3;
     // Start is called before the first frame update
     void Start()
     {
-
         transform.position = new Vector3(Random.Range(7.5f, 9.5f), -5.5f, 0);
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null)
@@ -42,14 +39,11 @@ public class GhostYellow : MonoBehaviour
         {
             Debug.LogError("Animator is NULL");
         }
-
     }
-    // Update is called once per frame
     void Update()
     {
         DodgeCheck();
         DodgeMovement();
-
         if (_isDodging)
             return;
 
@@ -58,15 +52,12 @@ public class GhostYellow : MonoBehaviour
             case MovePhase.UpToNeg3:
                 MoveUpToNeg3();
                 break;
-
             case MovePhase.LeftTo0:
                 MoveLeftTo0();
                 break;
-
             case MovePhase.UpTo3:
                 MoveUpTo3();
                 break;
-
             case MovePhase.LeftForever:
                 MoveLeftDestroy();
                 break;
@@ -89,7 +80,7 @@ public class GhostYellow : MonoBehaviour
     }
     private void ChooseRandomDodge()
     {
-        int choice = Random.Range(0, 3); // 0 = up, 1 = down, 2 = stay
+        int choice = Random.Range(0, 3);
 
         switch (choice)
         {
@@ -103,7 +94,6 @@ public class GhostYellow : MonoBehaviour
                 _dodgeTarget = transform.position;
                 break;
         }
-
         _isDodging = true;
     }
     private void DodgeMovement()

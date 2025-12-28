@@ -34,8 +34,6 @@ public class Bat : MonoBehaviour
             Debug.LogError("Animator on BatR is NULL");
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         CalculateMovement();

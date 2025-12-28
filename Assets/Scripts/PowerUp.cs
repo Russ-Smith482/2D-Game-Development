@@ -14,13 +14,11 @@ public class PowerUp : MonoBehaviour
 
     void Update()
     {
-        {
-            transform.Translate(Vector3.left * _speed * Time.deltaTime);
+        transform.Translate(Vector3.left * _speed * Time.deltaTime);
 
-            if (transform.position.x <= -9.75f)
-            {
-                Destroy(this.gameObject);
-            }
+        if (transform.position.x <= -9.75f)
+        {
+            Destroy(this.gameObject);
         }
     }
     private void OnTriggerEnter2D(Collider2D other)

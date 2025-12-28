@@ -7,15 +7,13 @@ public class BatPurple : MonoBehaviour
     private Player _player;
     private AudioSource _audioSource;
     private Animator _anim;
+
     [SerializeField]
     private float _speed = 2.5f;
-
-    private float _fireRate = 2f;
-    private float _canFire = -1f;
-
     [SerializeField]
     private GameObject _sonarWave;
-
+    private float _fireRate = 2f;
+    private float _canFire = -1f;
     private bool _isDead = false;
 
     // Start is called before the first frame update
@@ -38,12 +36,10 @@ public class BatPurple : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_isDead) return;
         CalculateMovement();
-
         EnemyFire();
     }
     private void CalculateMovement()

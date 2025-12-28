@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 4f;
-
     private Player _player;
-
     private Animator _anim;
-
     private AudioSource _audioSource;
 
-    private float _fireRate = 2f;
-    private float _canFire = -1f;
-
+    [SerializeField]
+    private float _speed = 4f;
     [SerializeField]
     private GameObject _seed;
 
+    private float _fireRate = 2f;
+    private float _canFire = -1f;
     private bool _isDead = false;
 
     // Start is called before the first frame update
@@ -29,26 +25,21 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Player is NULL");
         }
-
         _anim = GetComponent<Animator>();
         if (_anim == null)
         {
             Debug.LogError("Animator is NULL");
         }
-
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
         {
             Debug.LogError("Audio Source on the enemy is NULL");
         }
     }
-
     void Update()
     {
         if (_isDead) return;
-
         CalculateMovement();
-
         EnemyFire();
     }
     void EnemyFire()

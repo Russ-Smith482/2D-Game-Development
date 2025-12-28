@@ -5,19 +5,19 @@ using UnityEngine;
 public class Mummy : MonoBehaviour
 
 {
+    private Player _player;
+    private AudioSource _audioSource;
+
     [SerializeField]
     private float _speed = 2.5f;
     [SerializeField]
     private float _pauseDuration = 1f;
-
     [SerializeField] 
     private GameObject _bandage;
     private GameObject _currentBandage;
     [SerializeField] 
     private Transform _firePoint;
 
-    private Player _player;
-    private AudioSource _audioSource;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,8 +42,6 @@ public class Mummy : MonoBehaviour
             transform.position = new Vector3(10f, randomYSpawn, 0);
         }
     }
-
-   
     private IEnumerator MovementPattern()
     {
         while (true)
@@ -70,7 +68,6 @@ public class Mummy : MonoBehaviour
     private IEnumerator MoveForDuration(Vector2 direction, float duration)
     {
         float timer = 0f;
-
         while (timer < duration)
         {
             transform.Translate(direction * _speed * Time.deltaTime);
@@ -92,8 +89,6 @@ public class Mummy : MonoBehaviour
             _currentBandage.GetComponent<Bandage>().owner = this.gameObject;
         }
     }
-
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
